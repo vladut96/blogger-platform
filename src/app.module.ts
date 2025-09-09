@@ -7,9 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(
-      'mongodb+srv://admin:admin@learning.7fe0l.mongodb.net/my-database?retryWrites=true&w=majority&appName=Learning',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_URL!),
     UsersModule,
     BloggersPlatformModule,
   ],
