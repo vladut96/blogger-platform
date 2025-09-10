@@ -1,16 +1,11 @@
 {
   "version": 2,
-  "name": "blogger-platform",
-  "builds": [
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
     {
-      "src": "dist/main.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "dist/main.js"
+      "source": "/(.*)",
+      "destination": "/main.js"
     }
   ]
 }
