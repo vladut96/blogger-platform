@@ -4,6 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "npm install typescript",
     "build": "node_modules/.bin/tsc -p tsconfig.build.json",
     "start": "node dist/main.js",
     "vercel-build": "npm run build",
