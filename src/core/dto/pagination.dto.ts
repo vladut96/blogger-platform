@@ -16,10 +16,11 @@ export class PaginationDto {
 
   @IsOptional()
   @IsString()
+  @Transform(({ value }) => (value === '' ? undefined : String(value)))
   sortBy: string = 'createdAt';
 
   @IsOptional()
-  @IsIn(['asc', 'desc'])
   @Transform(({ value }) => (value === 'asc' ? 1 : -1))
+  @IsIn([1, -1])
   sortDirection: 1 | -1 = -1;
 }

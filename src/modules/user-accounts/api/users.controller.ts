@@ -18,6 +18,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get()
   async getUsers(@Query() query: QueryUsersDto) {
+    console.log(query);
     return await this.usersService.getUsers(query);
   }
 
