@@ -12,6 +12,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const users_module_1 = require("./modules/user-accounts/users.module");
 const bloggers_platform_module_1 = require("./modules/bloggers-platform/bloggers-platform.module");
 const config_1 = require("@nestjs/config");
+const testing_module_1 = require("./modules/delete-all-testing/testing.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -22,6 +23,7 @@ exports.AppModule = AppModule = __decorate([
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL),
             users_module_1.UsersModule,
             bloggers_platform_module_1.BloggersPlatformModule,
+            testing_module_1.TestingModule,
         ],
     })
 ], AppModule);

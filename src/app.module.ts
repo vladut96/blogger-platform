@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/user-accounts/users.module';
 import { BloggersPlatformModule } from './modules/bloggers-platform/bloggers-platform.module';
 import { ConfigModule } from '@nestjs/config';
+import { TestingModule } from './modules/delete-all-testing/testing.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
     MongooseModule.forRoot(process.env.MONGO_URL!),
     UsersModule,
     BloggersPlatformModule,
+    TestingModule,
   ],
 })
 export class AppModule {}
