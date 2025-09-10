@@ -40,10 +40,10 @@ export class BlogsQueryRepository {
       items: items.map((raw) => BlogsEntity.fromPersistence(raw).toViewModel()),
     };
   }
-  async getBlogById(id: string): Promise<BlogViewModel | null> {
+  async getBlogById(id: string): Promise<BlogsEntity | null> {
     if (!Types.ObjectId.isValid(id)) return null;
     const blog = await this.blogModel.findById(id).lean();
-    return blog ? BlogsEntity.fromPersistence(blog).toViewModel() : null;
+    return blog ? BlogsEntity.fromPersistence(blog) : null;
   }
 }
 

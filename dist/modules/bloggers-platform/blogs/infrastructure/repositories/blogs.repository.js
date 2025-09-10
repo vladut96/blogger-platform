@@ -48,7 +48,7 @@ let BlogsQueryRepository = class BlogsQueryRepository {
         if (!mongoose_1.Types.ObjectId.isValid(id))
             return null;
         const blog = await this.blogModel.findById(id).lean();
-        return blog ? blogs_entity_1.BlogsEntity.fromPersistence(blog).toViewModel() : null;
+        return blog ? blogs_entity_1.BlogsEntity.fromPersistence(blog) : null;
     }
 };
 exports.BlogsQueryRepository = BlogsQueryRepository;

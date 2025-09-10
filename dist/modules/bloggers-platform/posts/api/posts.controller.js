@@ -17,10 +17,13 @@ const common_1 = require("@nestjs/common");
 const create_or_update_post_dto_1 = require("../dto/create-or-update-post.dto");
 const posts_service_1 = require("../application/posts.service");
 const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
+const comments_service_1 = require("../../comments/application/comments.service");
+const query_comments_dto_1 = require("../../comments/dto/query-comments.dto");
 let PostsController = class PostsController {
-    constructor(postsService, postsQueryService) {
+    constructor(postsService, postsQueryService, commentService) {
         this.postsService = postsService;
         this.postsQueryService = postsQueryService;
+        this.commentService = commentService;
     }
     getPosts(query) {
         return this.postsQueryService.getPosts(query);
@@ -36,6 +39,9 @@ let PostsController = class PostsController {
     }
     async deletePostById(id) {
         return this.postsService.deletePostById(id);
+    }
+    getCommentsForPost(postId, query) {
+        return this.commentService.getCommentsByPostId({ ...query, postId });
     }
 };
 exports.PostsController = PostsController;
@@ -54,8 +60,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "getPostById", null);
 __decorate([
-    (0, common_1.Post)(':id'),
-    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
+    (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_or_update_post_dto_1.CreateOrUpdatePostDto]),
@@ -78,9 +83,18 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "deletePostById", null);
+__decorate([
+    (0, common_1.Get)(':postId/comments'),
+    __param(0, (0, common_1.Param)('postId')),
+    __param(1, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, query_comments_dto_1.QueryCommentsDto]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "getCommentsForPost", null);
 exports.PostsController = PostsController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [posts_service_1.PostsService,
-        posts_service_1.PostsQueryService])
+        posts_service_1.PostsQueryService,
+        comments_service_1.CommentsService])
 ], PostsController);
 //# sourceMappingURL=posts.controller.js.map

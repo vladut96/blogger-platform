@@ -27,9 +27,8 @@ let PostsService = class PostsService {
     async createPost(postPayload) {
         const { title, shortDescription, content, blogId } = postPayload;
         const blog = await this.blogsQueryRepository.getBlogById(blogId);
-        if (!blog) {
-            throw new Error('BLOG_NOT_FOUND');
-        }
+        if (!blog)
+            throw new common_1.NotFoundException();
         const entity = posts_entity_1.PostEntity.create({
             title,
             shortDescription,

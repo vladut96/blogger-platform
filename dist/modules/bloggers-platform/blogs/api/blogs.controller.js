@@ -37,7 +37,7 @@ let BlogsController = class BlogsController {
         return this.postsQueryService.getPostsByBlogId(blogId, query);
     }
     async createPost(blogId, dto) {
-        await this.postsService.createPost({ ...dto, blogId });
+        return await this.postsService.createPost({ ...dto, blogId });
     }
     async getBlogById(id) {
         return await this.blogsQueryService.getBlogById(id);

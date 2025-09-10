@@ -48,7 +48,7 @@ export class BlogsController {
     @Param('blogId') blogId: string,
     @Body() dto: CreatePostDtoWithIdParam,
   ) {
-    await this.postsService.createPost({ ...dto, blogId });
+    return await this.postsService.createPost({ ...dto, blogId });
   }
 
   @Get(':id')

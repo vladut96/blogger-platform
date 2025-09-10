@@ -13,7 +13,7 @@ export declare class BlogsController {
     getBlogs(query: QueryBlogsDto): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").BlogViewModel>>;
     createBlog(dto: CreateBlogDto): Promise<import("../../../../core/types/types").BlogViewModel>;
     getPostsByBlogId(blogId: string, query: PaginationDto): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").PostViewModel>>;
-    createPost(blogId: string, dto: CreatePostDtoWithIdParam): Promise<void>;
+    createPost(blogId: string, dto: CreatePostDtoWithIdParam): Promise<import("../../../../core/types/types").PostViewModel>;
     getBlogById(id: string): Promise<import("../../../../core/types/types").BlogViewModel>;
     updateBlog(id: string, dto: CreateBlogDto): Promise<void>;
     deleteBlog(id: string): Promise<void>;

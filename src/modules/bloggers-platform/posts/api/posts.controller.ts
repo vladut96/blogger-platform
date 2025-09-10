@@ -13,12 +13,15 @@ import {
 import { CreateOrUpdatePostDto } from '../dto/create-or-update-post.dto';
 import { PostsQueryService, PostsService } from '../application/posts.service';
 import { PaginationDto } from '../../../../core/dto/pagination.dto';
+import { CommentsService } from '../../comments/application/comments.service';
+import { QueryCommentsDto } from '../../comments/dto/query-comments.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postsQueryService: PostsQueryService,
+    private readonly commentService: CommentsService,
   ) {}
   @Get()
   getPosts(@Query() query: PaginationDto) {
@@ -28,8 +31,7 @@ export class PostsController {
   async getPostById(@Param('id') id: string) {
     return this.postsQueryService.getPostById(id);
   }
-  @Post(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post()
   async createPost(@Body() dto: CreateOrUpdatePostDto) {
     return this.postsService.createPost(dto);
   }
@@ -46,11 +48,11 @@ export class PostsController {
   async deletePostById(@Param('id') id: string) {
     return this.postsService.deletePostById(id);
   }
+  @Get(':postId/comments')
+  getCommentsForPost(
+    @Param('postId') postId: string,
+    @Query() query: QueryCommentsDto,
+  ) {
+    return this.commentService.getCommentsByPostId({ ...query, postId });
+  }
 }
-// @Get(':postId/comments')
-// getCommentsForPost(
-//   @Param('postId') postId: string,
-//   @Query() query: PaginationDto,
-// ) {
-//   return {...postId, query};
-// }

@@ -26,9 +26,7 @@ export class PostsService {
     const { title, shortDescription, content, blogId } = postPayload;
 
     const blog = await this.blogsQueryRepository.getBlogById(blogId);
-    if (!blog) {
-      throw new Error('BLOG_NOT_FOUND');
-    }
+    if (!blog) throw new NotFoundException();
 
     const entity = PostEntity.create({
       title,

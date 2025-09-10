@@ -7,7 +7,7 @@ export declare class BlogsQueryRepository {
     private readonly blogModel;
     constructor(blogModel: Model<BlogDocument>);
     getBlogs(params: QueryBlogsDto): Promise<Paginator<BlogViewModel>>;
-    getBlogById(id: string): Promise<BlogViewModel | null>;
+    getBlogById(id: string): Promise<BlogsEntity | null>;
 }
 export declare class BlogsRepository {
     private readonly blogModel;
