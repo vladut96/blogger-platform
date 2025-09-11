@@ -19,7 +19,7 @@ export class BlogsQueryService {
   async getBlogs(query: QueryBlogsDto): Promise<Paginator<BlogViewModel>> {
     return this.blogsQueryRepository.getBlogs(query);
   }
-  async getBlogById(blogID: string): Promise<BlogViewModel> {
+  async getBlogById(blogID: string): Promise<BlogsEntity> {
     const blog = await this.blogsQueryRepository.getBlogById(blogID);
     if (!blog) throw new NotFoundException();
     return blog;
