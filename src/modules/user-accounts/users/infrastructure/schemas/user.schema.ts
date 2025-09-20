@@ -5,7 +5,7 @@ import { HydratedDocument } from 'mongoose';
 class EmailConfirmation {
   @Prop({ type: String, default: null }) confirmationCode!: string | null;
   @Prop({ type: Date, default: null }) expirationDate!: Date | null;
-  @Prop({ type: Boolean, required: true }) isConfirmed!: boolean;
+  @Prop({ type: Boolean, default: false }) isConfirmed!: boolean;
 }
 
 @Schema({ _id: false })

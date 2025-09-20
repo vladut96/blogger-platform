@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication } from '@nestjs/common';
@@ -13,12 +13,19 @@ async function bootstrap() {
     app.enableCors();
     app.useGlobalPipes(
       new ValidationPipe({
-        transform: true, // ⚡️ превращает plain object в instance твоего DTO
-        whitelist: true, // ⚡️ убирает поля, которых нет в DTO
-        forbidNonWhitelisted: false, // если true → выбросит ошибку на лишние поля
+        whitelist: true,
+        transform: true,
+        stopAtFirstError: true,
+        exceptionFactory: (errors) => {
+          const errorsForResponse = errors.map((e) => ({
+            message: Object.values(e.constraints!)[0],
+            field: e.property,
+          }));
+          return new BadRequestException({ errorsMessages: errorsForResponse });
+        },
       }),
     );
-    await app.init(); // ⚡️ без listen
+    await app.init();
     cachedApp = app;
   }
   return cachedApp.getHttpAdapter().getInstance() as RequestListener;
@@ -31,9 +38,16 @@ if (!process.env.VERCEL) {
     app.enableCors();
     app.useGlobalPipes(
       new ValidationPipe({
-        transform: true, // ⚡️ превращает plain object в instance твоего DTO
-        whitelist: true, // ⚡️ убирает поля, которых нет в DTO
-        forbidNonWhitelisted: false, // если true → выбросит ошибку на лишние поля
+        whitelist: true,
+        transform: true,
+        stopAtFirstError: true,
+        exceptionFactory: (errors) => {
+          const errorsForResponse = errors.map((e) => ({
+            message: Object.values(e.constraints!)[0],
+            field: e.property,
+          }));
+          return new BadRequestException({ errorsMessages: errorsForResponse });
+        },
       }),
     );
     await app.listen(process.env.PORT ?? 3000);

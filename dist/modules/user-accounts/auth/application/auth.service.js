@@ -49,7 +49,7 @@ let AuthService = class AuthService {
         return { accessToken, refreshToken };
     }
     async registerUser(dto) {
-        const existingUser = await this.usersService.getUserByLoginOrEmail(dto.login, dto.email);
+        const existingUser = await this.usersService.getUserByLoginOrEmail(dto.email, dto.login);
         if (existingUser)
             throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('User already exists', 'user'));
         const newUser = await this.usersService.registerUser(dto);

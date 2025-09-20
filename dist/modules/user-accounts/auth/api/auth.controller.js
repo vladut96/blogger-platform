@@ -22,6 +22,7 @@ const new_password_dto_1 = require("../dto/new-password.dto");
 const login_dto_1 = require("../dto/login.dto");
 const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
+const confirmation_code_dto_1 = require("../dto/confirmation-code.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -93,7 +94,7 @@ __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [confirmation_code_dto_1.CodeDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "confirmEmail", null);
 __decorate([

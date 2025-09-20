@@ -4,12 +4,13 @@ import { QueryUsersDto } from '../dto/query-users.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDocument } from '../infrastructure/schemas/user.schema';
 import { EmailDto } from '../../../../core/dto/email.dto';
+import { CodeDto } from '../../auth/dto/confirmation-code.dto';
 export declare class UsersService {
     private readonly usersRepository;
     constructor(usersRepository: UsersRepository);
     getUsers(query: QueryUsersDto): Promise<Paginator<UserViewModel>>;
     getUserByLoginOrEmail(email: string | EmailDto, login?: string): Promise<null | UserDocument>;
-    findUserByConfirmationCode(code: string): Promise<RegisterUserDB<EmailConfirmation> | null>;
+    findUserByConfirmationCode(code: CodeDto): Promise<RegisterUserDB<EmailConfirmation> | null>;
     updateConfirmationStatus(email: string, status: boolean): Promise<void>;
     updateConfirmationCode(email: EmailDto, newCode: string, expirationDate: Date): Promise<boolean>;
     setPasswordRecoveryCode(dto: RecoveryCodeModel): Promise<boolean>;

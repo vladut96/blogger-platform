@@ -22,7 +22,7 @@ __decorate([
     __metadata("design:type", Object)
 ], EmailConfirmation.prototype, "expirationDate", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: Boolean, required: true }),
+    (0, mongoose_1.Prop)({ type: Boolean, default: false }),
     __metadata("design:type", Boolean)
 ], EmailConfirmation.prototype, "isConfirmed", void 0);
 EmailConfirmation = __decorate([

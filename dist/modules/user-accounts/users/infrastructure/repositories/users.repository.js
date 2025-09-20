@@ -44,11 +44,14 @@ let UsersRepository = class UsersRepository {
         return { users, totalCount };
     }
     async getUserByLoginOrEmail(email, login) {
-        return this.userModel
-            .findOne({
-            $or: [{ login }, { email }],
-        })
-            .lean();
+        const or = [];
+        if (login)
+            or.push({ login });
+        if (email)
+            or.push({ email });
+        if (or.length === 0)
+            return null;
+        return this.userModel.findOne({ $or: or }).lean();
     }
     async findUserByConfirmationCode(code) {
         return this.userModel

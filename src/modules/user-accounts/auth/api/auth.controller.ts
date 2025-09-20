@@ -20,6 +20,7 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from '../../../../core/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
 import { JwtUser } from '../../../../core/types/types';
+import { CodeDto } from '../dto/confirmation-code.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -63,7 +64,7 @@ export class AuthController {
   }
   @Post('registration-confirmation')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async confirmEmail(@Body() code: string) {
+  async confirmEmail(@Body() code: CodeDto) {
     return await this.authService.confirmEmail(code);
   }
   @Post('registration')

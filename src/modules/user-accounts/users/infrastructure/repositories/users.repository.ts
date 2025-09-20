@@ -9,6 +9,7 @@ import {
   RegisterUserDB,
 } from '../../../../../core/types/types';
 import { EmailDto } from '../../../../../core/dto/email.dto';
+import { CodeDto } from '../../../auth/dto/confirmation-code.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -56,14 +57,15 @@ export class UsersRepository {
     email: string | EmailDto,
     login?: string,
   ): Promise<null | UserDocument> {
-    return this.userModel
-      .findOne({
-        $or: [{ login }, { email }],
-      })
-      .lean();
+    const or: any[] = [];
+    if (login) or.push({ login });
+    if (email) or.push({ email });
+    if (or.length === 0) return null;
+
+    return this.userModel.findOne({ $or: or }).lean();
   }
   async findUserByConfirmationCode(
-    code: string,
+    code: CodeDto,
   ): Promise<RegisterUserDB<EmailConfirmation> | null> {
     return this.userModel
       .findOne({

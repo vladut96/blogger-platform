@@ -17,6 +17,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { generateTokens } from '../../../../core/utils/generateTokens';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AuthRepository } from '../infrastracture/repositories/auth.repository';
+import { CodeDto } from '../dto/confirmation-code.dto';
 
 @injectable()
 export class AuthService {
@@ -54,8 +55,8 @@ export class AuthService {
   }
   async registerUser(dto: CreateUserDto): Promise<void> {
     const existingUser = await this.usersService.getUserByLoginOrEmail(
-      dto.login,
       dto.email,
+      dto.login,
     );
     if (existingUser)
       throw new ValidationException(
@@ -70,7 +71,7 @@ export class AuthService {
       nodemailerService.emailTemplates.registrationEmail,
     );
   }
-  async confirmEmail(code: string): Promise<void> {
+  async confirmEmail(code: CodeDto): Promise<void> {
     const user = await this.usersService.findUserByConfirmationCode(code);
     if (
       !user ||

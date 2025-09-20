@@ -5,6 +5,7 @@ import { EmailDto } from '../../../../core/dto/email.dto';
 import { NewPasswordDto } from '../dto/new-password.dto';
 import { LoginDto } from '../dto/login.dto';
 import { JwtUser } from '../../../../core/types/types';
+import { CodeDto } from '../dto/confirmation-code.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -13,7 +14,7 @@ export declare class AuthController {
     }>;
     requestPasswordRecovery(dto: EmailDto): Promise<void>;
     setNewPassword(dto: NewPasswordDto): Promise<boolean>;
-    confirmEmail(code: string): Promise<void>;
+    confirmEmail(code: CodeDto): Promise<void>;
     registerUser(dto: CreateUserDto): Promise<void>;
     resendConfirmationEmail(dto: EmailDto): Promise<void>;
     getMyInfo(user: JwtUser): {

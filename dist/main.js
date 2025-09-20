@@ -10,9 +10,16 @@ async function bootstrap() {
         const app = await core_1.NestFactory.create(app_module_1.AppModule);
         app.enableCors();
         app.useGlobalPipes(new common_1.ValidationPipe({
-            transform: true,
             whitelist: true,
-            forbidNonWhitelisted: false,
+            transform: true,
+            stopAtFirstError: true,
+            exceptionFactory: (errors) => {
+                const errorsForResponse = errors.map((e) => ({
+                    message: Object.values(e.constraints)[0],
+                    field: e.property,
+                }));
+                return new common_1.BadRequestException({ errorsMessages: errorsForResponse });
+            },
         }));
         await app.init();
         cachedApp = app;
@@ -24,9 +31,16 @@ if (!process.env.VERCEL) {
         const app = await core_1.NestFactory.create(app_module_1.AppModule);
         app.enableCors();
         app.useGlobalPipes(new common_1.ValidationPipe({
-            transform: true,
             whitelist: true,
-            forbidNonWhitelisted: false,
+            transform: true,
+            stopAtFirstError: true,
+            exceptionFactory: (errors) => {
+                const errorsForResponse = errors.map((e) => ({
+                    message: Object.values(e.constraints)[0],
+                    field: e.property,
+                }));
+                return new common_1.BadRequestException({ errorsMessages: errorsForResponse });
+            },
         }));
         await app.listen(process.env.PORT ?? 3000);
         console.log(`🚀 Application is running on: http://localhost:${process.env.PORT ?? 3000}`);

@@ -14,6 +14,7 @@ import { buildPaginator } from '../../../../core/utils/buildPaginator';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDocument } from '../infrastructure/schemas/user.schema';
 import { EmailDto } from '../../../../core/dto/email.dto';
+import { CodeDto } from '../../auth/dto/confirmation-code.dto';
 
 @injectable()
 export class UsersService {
@@ -34,7 +35,7 @@ export class UsersService {
   ): Promise<null | UserDocument> {
     return await this.usersRepository.getUserByLoginOrEmail(email, login);
   }
-  async findUserByConfirmationCode(code: string) {
+  async findUserByConfirmationCode(code: CodeDto) {
     return await this.usersRepository.findUserByConfirmationCode(code);
   }
   async updateConfirmationStatus(
