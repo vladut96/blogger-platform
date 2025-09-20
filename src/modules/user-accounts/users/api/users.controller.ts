@@ -8,19 +8,21 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 
 import { CreateUserDto } from '../dto/create-user.dto';
 import { QueryUsersDto } from '../dto/query-users.dto';
-import { ParseMongoIdPipe } from '../../../core/pipes/parse-mongo-id.pipe';
+import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
 import { UsersService } from '../application/users.service';
+import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
 
+@UseGuards(BasicAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get()
   async getUsers(@Query() query: QueryUsersDto) {
-    console.log(query);
     return await this.usersService.getUsers(query);
   }
 

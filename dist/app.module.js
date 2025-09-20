@@ -9,10 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const users_module_1 = require("./modules/user-accounts/users.module");
+const users_module_1 = require("./modules/user-accounts/users/users.module");
 const bloggers_platform_module_1 = require("./modules/bloggers-platform/bloggers-platform.module");
 const config_1 = require("@nestjs/config");
 const testing_module_1 = require("./modules/delete-all-testing/testing.module");
+const auth_module_1 = require("./modules/user-accounts/auth/auth.module");
+const throttler_1 = require("@nestjs/throttler");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -21,8 +23,17 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL),
+            throttler_1.ThrottlerModule.forRoot({
+                throttlers: [
+                    {
+                        ttl: 10,
+                        limit: 5,
+                    },
+                ],
+            }),
             users_module_1.UsersModule,
             bloggers_platform_module_1.BloggersPlatformModule,
+            auth_module_1.AuthModule,
             testing_module_1.TestingModule,
         ],
     })

@@ -5,10 +5,10 @@ import { LikeStatus } from '../../../../../core/types/types';
 @Schema({ collection: 'comments' })
 export class Comment {
   @Prop({ required: true })
-  postId: string;
+  postId!: string;
 
   @Prop({ required: true })
-  content: string;
+  content!: string;
 
   @Prop({
     type: {
@@ -17,13 +17,13 @@ export class Comment {
     },
     required: true,
   })
-  commentatorInfo: {
+  commentatorInfo!: {
     userId: string;
     userLogin: string;
   };
 
   @Prop({ required: true })
-  createdAt: string;
+  createdAt!: string;
 
   @Prop({
     type: [
@@ -40,17 +40,17 @@ export class Comment {
     ],
     default: [],
   })
-  likes: {
+  likes!: {
     userId: string;
     status: LikeStatus;
     createdAt: Date;
   }[];
 
   @Prop({ required: true, default: 0 })
-  likesCount: number;
+  likesCount!: number;
 
   @Prop({ required: true, default: 0 })
-  dislikesCount: number;
+  dislikesCount!: number;
 }
 
 export type CommentDocument = HydratedDocument<Comment>;

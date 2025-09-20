@@ -3,7 +3,7 @@ import {
   UserDBModel,
   UserInputModel,
   UserToPersistence,
-} from '../../../core/types/types';
+} from '../../../../core/types/types';
 import { EmailConfirmationFactory } from '../infrastructure/email-confirmation-code-generator';
 import { hashPassword } from '../infrastructure/passwordUtils';
 

@@ -4,7 +4,7 @@ import { TestingController } from './testing.controller';
 import {
   User,
   UserSchema,
-} from '../user-accounts/infrastructure/schemas/user.schema';
+} from '../user-accounts/users/infrastructure/schemas/user.schema';
 import {
   Post,
   PostSchema,
@@ -17,6 +17,10 @@ import {
   Comment,
   CommentSchema,
 } from '../bloggers-platform/comments/infrastructure/schemas/comments.schema';
+import {
+  DeviceSession,
+  DeviceSessionSchema,
+} from '../user-accounts/auth/infrastracture/schemas/auth.schema';
 
 @Module({
   imports: [
@@ -24,7 +28,8 @@ import {
       { name: User.name, schema: UserSchema },
       { name: Post.name, schema: PostSchema },
       { name: Blog.name, schema: BlogSchema },
-      { name: Comment.name, schema: CommentSchema, collection: 'Comments' },
+      { name: Comment.name, schema: CommentSchema },
+      { name: DeviceSession.name, schema: DeviceSessionSchema },
     ]),
   ],
   controllers: [TestingController],

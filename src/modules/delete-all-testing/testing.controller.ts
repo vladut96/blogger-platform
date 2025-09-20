@@ -1,6 +1,6 @@
-import { Controller, Delete, HttpCode } from '@nestjs/common';
+import { Controller, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../user-accounts/infrastructure/schemas/user.schema';
+import { User } from '../user-accounts/users/infrastructure/schemas/user.schema';
 import { Post } from '../bloggers-platform/posts/infrastructure/schemas/posts.schema';
 import { Blog } from '../bloggers-platform/blogs/infrastructure/schemas/blogs.schema';
 import { Model } from 'mongoose';
@@ -8,6 +8,10 @@ import {
   Comment,
   CommentDocument,
 } from '../bloggers-platform/comments/infrastructure/schemas/comments.schema';
+import {
+  DeviceSession,
+  DeviceSessionDocument,
+} from '../user-accounts/auth/infrastracture/schemas/auth.schema';
 
 @Controller('/testing')
 export class TestingController {
@@ -17,14 +21,17 @@ export class TestingController {
     @InjectModel(Blog.name) private readonly blogModel: Model<Blog>,
     @InjectModel(Comment.name)
     private readonly commentModel: Model<CommentDocument>,
+    @InjectModel(DeviceSession.name)
+    private deviceSession: Model<DeviceSessionDocument>,
   ) {}
 
   @Delete('all-data')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async deleteAll() {
     await this.userModel.deleteMany({});
     await this.postModel.deleteMany({});
     await this.blogModel.deleteMany({});
     await this.commentModel.deleteMany();
+    await this.deviceSession.deleteMany();
   }
 }

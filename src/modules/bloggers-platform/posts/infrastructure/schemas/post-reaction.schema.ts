@@ -3,12 +3,12 @@ import { HydratedDocument } from 'mongoose';
 
 @Schema({ collection: 'post_reactions' })
 export class PostReaction {
-  @Prop({ required: true, index: true }) postId: string;
-  @Prop({ required: true, index: true }) userId: string;
-  @Prop({ required: true }) userLogin: string;
+  @Prop({ required: true, index: true }) postId!: string;
+  @Prop({ required: true, index: true }) userId!: string;
+  @Prop({ required: true }) userLogin!: string;
   @Prop({ required: true, enum: ['None', 'Like', 'Dislike'] })
-  status: 'None' | 'Like' | 'Dislike';
-  @Prop({ default: () => new Date().toISOString() }) addedAt: string;
+  status!: 'None' | 'Like' | 'Dislike';
+  @Prop({ default: () => new Date().toISOString() }) addedAt!: string;
 }
 
 export type PostReactionDocument = HydratedDocument<PostReaction>;

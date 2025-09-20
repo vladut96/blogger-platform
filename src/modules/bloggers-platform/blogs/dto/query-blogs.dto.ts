@@ -7,5 +7,5 @@ export class QueryBlogsDto extends PaginationDto {
 
 export class QueryBlogsWithIdDto extends PaginationDto {
   @IsString()
-  blogId: string;
+  blogId!: string;
 }

@@ -18,7 +18,7 @@ import {
   PostsQueryRepository,
   PostsRepository,
 } from './posts/infrastructure/repositories/posts.repository';
-import { UsersModule } from '../user-accounts/users.module';
+import { UsersModule } from '../user-accounts/users/users.module';
 import { Blog, BlogSchema } from './blogs/infrastructure/schemas/blogs.schema';
 import { Post, PostSchema } from './posts/infrastructure/schemas/posts.schema';
 import {
@@ -37,10 +37,10 @@ import { CommentsRepository } from './comments/infrastructure/repositories/comme
   imports: [
     UsersModule,
     MongooseModule.forFeature([
-      { name: Blog.name, schema: BlogSchema, collection: 'Blogs' },
-      { name: Post.name, schema: PostSchema, collection: 'Posts' },
+      { name: Blog.name, schema: BlogSchema },
+      { name: Post.name, schema: PostSchema },
       { name: PostReaction.name, schema: PostReactionSchema },
-      { name: Comment.name, schema: CommentSchema, collection: 'Comments' },
+      { name: Comment.name, schema: CommentSchema },
     ]),
   ],
   controllers: [BlogsController, PostsController, CommentsController],
