@@ -10,10 +10,11 @@ exports.TestingModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const testing_controller_1 = require("./testing.controller");
-const user_schema_1 = require("../user-accounts/infrastructure/schemas/user.schema");
+const user_schema_1 = require("../user-accounts/users/infrastructure/schemas/user.schema");
 const posts_schema_1 = require("../bloggers-platform/posts/infrastructure/schemas/posts.schema");
 const blogs_schema_1 = require("../bloggers-platform/blogs/infrastructure/schemas/blogs.schema");
 const comments_schema_1 = require("../bloggers-platform/comments/infrastructure/schemas/comments.schema");
+const auth_schema_1 = require("../user-accounts/auth/infrastracture/schemas/auth.schema");
 let TestingModule = class TestingModule {
 };
 exports.TestingModule = TestingModule;
@@ -24,7 +25,8 @@ exports.TestingModule = TestingModule = __decorate([
                 { name: user_schema_1.User.name, schema: user_schema_1.UserSchema },
                 { name: posts_schema_1.Post.name, schema: posts_schema_1.PostSchema },
                 { name: blogs_schema_1.Blog.name, schema: blogs_schema_1.BlogSchema },
-                { name: comments_schema_1.Comment.name, schema: comments_schema_1.CommentSchema, collection: 'Comments' },
+                { name: comments_schema_1.Comment.name, schema: comments_schema_1.CommentSchema },
+                { name: auth_schema_1.DeviceSession.name, schema: auth_schema_1.DeviceSessionSchema },
             ]),
         ],
         controllers: [testing_controller_1.TestingController],

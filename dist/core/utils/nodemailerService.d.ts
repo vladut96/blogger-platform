@@ -1,8 +1,9 @@
-import nodemailer from 'nodemailer';
 import { SentMessageInfo } from 'nodemailer';
-export declare const nodemailerService: {
-    transporter: nodemailer.Transporter<import("nodemailer/lib/smtp-transport").SentMessageInfo, import("nodemailer/lib/smtp-transport").Options>;
-    sendEmail(to: string, confirmationCode: string, emailTemplate: {
+import { EmailDto } from '../dto/email.dto';
+declare class NodemailerService {
+    private transporter;
+    constructor();
+    sendEmail(to: string | EmailDto, confirmationCode: string, emailTemplate: {
         subject: string;
         html: string;
         text?: string;
@@ -19,4 +20,6 @@ export declare const nodemailerService: {
             text: string;
         };
     };
-};
+}
+export declare const nodemailerService: NodemailerService;
+export {};

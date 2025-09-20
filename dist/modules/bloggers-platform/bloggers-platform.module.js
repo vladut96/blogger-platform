@@ -15,7 +15,7 @@ const blogs_service_1 = require("./blogs/application/blogs.service");
 const blogs_repository_1 = require("./blogs/infrastructure/repositories/blogs.repository");
 const posts_service_1 = require("./posts/application/posts.service");
 const posts_repository_1 = require("./posts/infrastructure/repositories/posts.repository");
-const users_module_1 = require("../user-accounts/users.module");
+const users_module_1 = require("../user-accounts/users/users.module");
 const blogs_schema_1 = require("./blogs/infrastructure/schemas/blogs.schema");
 const posts_schema_1 = require("./posts/infrastructure/schemas/posts.schema");
 const post_reaction_schema_1 = require("./posts/infrastructure/schemas/post-reaction.schema");
@@ -31,10 +31,10 @@ exports.BloggersPlatformModule = BloggersPlatformModule = __decorate([
         imports: [
             users_module_1.UsersModule,
             mongoose_1.MongooseModule.forFeature([
-                { name: blogs_schema_1.Blog.name, schema: blogs_schema_1.BlogSchema, collection: 'Blogs' },
-                { name: posts_schema_1.Post.name, schema: posts_schema_1.PostSchema, collection: 'Posts' },
+                { name: blogs_schema_1.Blog.name, schema: blogs_schema_1.BlogSchema },
+                { name: posts_schema_1.Post.name, schema: posts_schema_1.PostSchema },
                 { name: post_reaction_schema_1.PostReaction.name, schema: post_reaction_schema_1.PostReactionSchema },
-                { name: comments_schema_1.Comment.name, schema: comments_schema_1.CommentSchema, collection: 'Comments' },
+                { name: comments_schema_1.Comment.name, schema: comments_schema_1.CommentSchema },
             ]),
         ],
         controllers: [blogs_controller_1.BlogsController, posts_controller_1.PostsController, comments_controller_1.CommentsController],

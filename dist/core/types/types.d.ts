@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { Types } from 'mongoose';
+import { EmailDto } from '../dto/email.dto';
 export interface FieldError {
     message: string;
     field: string;
@@ -98,6 +99,11 @@ export type UserToPersistence = {
     emailConfirmation: EmailConfirmation;
     passwordRecovery: PasswordRecovery;
 };
+export type RecoveryCodeModel = {
+    email: string | EmailDto;
+    recoveryCode: string;
+    expirationDate: Date;
+};
 export interface UserAuthModel {
     _id: ObjectId;
     login: string;
@@ -158,10 +164,10 @@ export interface MeViewModel {
     userId: string;
     deviceId?: string;
 }
-export interface RequestLog {
-    IP?: string;
-    URL: string;
-    date: Date;
+export interface JwtUser {
+    userId: string;
+    login: string;
+    email: string;
 }
 export interface DeviceAuthSession {
     userId: string;
