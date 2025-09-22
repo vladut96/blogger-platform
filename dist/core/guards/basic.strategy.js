@@ -13,15 +13,15 @@ exports.BasicStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const passport_http_1 = require("passport-http");
-let BasicStrategy = class BasicStrategy extends (0, passport_1.PassportStrategy)(passport_http_1.BasicStrategy) {
+let BasicStrategy = class BasicStrategy extends (0, passport_1.PassportStrategy)(passport_http_1.BasicStrategy, 'basic') {
     constructor() {
         super();
     }
-    validate(username, password) {
+    async validate(username, password) {
         const validLogin = process.env.BASIC_AUTH_LOGIN || 'admin';
         const validPassword = process.env.BASIC_AUTH_PASSWORD || 'qwerty';
-        if (username === validLogin && password === validPassword) {
-        }
+        if (username === validLogin && password === validPassword)
+            return { username };
         throw new common_1.UnauthorizedException();
     }
 };

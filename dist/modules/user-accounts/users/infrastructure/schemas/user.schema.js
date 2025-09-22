@@ -11,36 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserSchema = exports.User = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
-let EmailConfirmation = class EmailConfirmation {
-};
-__decorate([
-    (0, mongoose_1.Prop)({ type: String, default: null }),
-    __metadata("design:type", Object)
-], EmailConfirmation.prototype, "confirmationCode", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: Date, default: null }),
-    __metadata("design:type", Object)
-], EmailConfirmation.prototype, "expirationDate", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: Boolean, default: false }),
-    __metadata("design:type", Boolean)
-], EmailConfirmation.prototype, "isConfirmed", void 0);
-EmailConfirmation = __decorate([
-    (0, mongoose_1.Schema)({ _id: false })
-], EmailConfirmation);
-let PasswordRecovery = class PasswordRecovery {
-};
-__decorate([
-    (0, mongoose_1.Prop)({ type: String, default: null }),
-    __metadata("design:type", Object)
-], PasswordRecovery.prototype, "recoveryCode", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ type: Date, default: null }),
-    __metadata("design:type", Object)
-], PasswordRecovery.prototype, "expirationDate", void 0);
-PasswordRecovery = __decorate([
-    (0, mongoose_1.Schema)({ _id: false })
-], PasswordRecovery);
 let User = class User {
 };
 exports.User = User;
@@ -61,15 +31,25 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "createdAt", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: EmailConfirmation, required: true }),
-    __metadata("design:type", EmailConfirmation)
+    (0, mongoose_1.Prop)({
+        type: {
+            confirmationCode: { type: String, default: null },
+            expirationDate: { type: Date, default: null },
+            isConfirmed: { type: Boolean, default: false },
+        },
+        required: true,
+    }),
+    __metadata("design:type", Object)
 ], User.prototype, "emailConfirmation", void 0);
 __decorate([
     (0, mongoose_1.Prop)({
-        type: PasswordRecovery,
-        default: () => ({ recoveryCode: null, expirationDate: null }),
+        type: {
+            recoveryCode: { type: String, default: null },
+            expirationDate: { type: Date, default: null },
+        },
+        default: { recoveryCode: null, expirationDate: null },
     }),
-    __metadata("design:type", PasswordRecovery)
+    __metadata("design:type", Object)
 ], User.prototype, "passwordRecovery", void 0);
 exports.User = User = __decorate([
     (0, mongoose_1.Schema)({ collection: 'Users' })

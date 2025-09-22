@@ -1,10 +1,11 @@
-import { EmailConfirmation, Paginator, RecoveryCodeModel, RegisterUserDB, UserViewModel } from '../../../../core/types/types';
+import { EmailConfirmation, Paginator, RecoveryCodeModel, RegisterUserDB, UserID, UserViewModel } from '../../../../core/types/types';
 import { UsersRepository } from '../infrastructure/repositories/users.repository';
 import { QueryUsersDto } from '../dto/query-users.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDocument } from '../infrastructure/schemas/user.schema';
 import { EmailDto } from '../../../../core/dto/email.dto';
 import { CodeDto } from '../../auth/dto/confirmation-code.dto';
+import { Types } from 'mongoose';
 export declare class UsersService {
     private readonly usersRepository;
     constructor(usersRepository: UsersRepository);
@@ -23,9 +24,9 @@ export declare class UsersService {
         createdAt: string;
     }>;
     registerUser(userDTO: CreateUserDto): Promise<import("mongoose").Document<unknown, {}, import("../infrastructure/schemas/user.schema").User, {}, {}> & import("../infrastructure/schemas/user.schema").User & {
-        _id: import("mongoose").Types.ObjectId;
+        _id: Types.ObjectId;
     } & {
         __v: number;
     }>;
-    deleteUserById(userId: string): Promise<void>;
+    deleteUserById(userId: UserID): Promise<void>;
 }

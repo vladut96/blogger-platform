@@ -14,7 +14,7 @@ class ParseMongoIdPipe {
             ];
             throw new custom_validation_exception_1.ValidationException(errors);
         }
-        return value;
+        return new mongoose_1.Types.ObjectId(value);
     }
 }
 exports.ParseMongoIdPipe = ParseMongoIdPipe;

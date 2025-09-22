@@ -1,20 +1,18 @@
 import { HydratedDocument } from 'mongoose';
-declare class EmailConfirmation {
-    confirmationCode: string | null;
-    expirationDate: Date | null;
-    isConfirmed: boolean;
-}
-declare class PasswordRecovery {
-    recoveryCode: string | null;
-    expirationDate: Date | null;
-}
 export declare class User {
     login: string;
     email: string;
     passwordHash: string;
     createdAt: string;
-    emailConfirmation: EmailConfirmation;
-    passwordRecovery: PasswordRecovery;
+    emailConfirmation: {
+        confirmationCode: string | null;
+        expirationDate: Date | null;
+        isConfirmed: boolean;
+    };
+    passwordRecovery: {
+        recoveryCode: string | null;
+        expirationDate: Date | null;
+    };
 }
 export type UserDocument = HydratedDocument<User>;
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User, any, {}> & User & {
@@ -26,4 +24,3 @@ export declare const UserSchema: import("mongoose").Schema<User, import("mongoos
 } & {
     __v: number;
 }>;
-export {};

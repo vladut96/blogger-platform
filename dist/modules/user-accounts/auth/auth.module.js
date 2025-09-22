@@ -14,19 +14,22 @@ const auth_service_1 = require("./application/auth.service");
 const auth_repository_1 = require("./infrastracture/repositories/auth.repository");
 const auth_schema_1 = require("./infrastracture/schemas/auth.schema");
 const users_module_1 = require("../users/users.module");
+const passport_1 = require("@nestjs/passport");
+const jwt_strategy_1 = require("../../../core/guards/jwt.strategy");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            passport_1.PassportModule,
             mongoose_1.MongooseModule.forFeature([
                 { name: auth_schema_1.DeviceSession.name, schema: auth_schema_1.DeviceSessionSchema },
             ]),
             users_module_1.UsersModule,
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, auth_repository_1.AuthRepository],
+        providers: [auth_service_1.AuthService, auth_repository_1.AuthRepository, jwt_strategy_1.JwtStrategy],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

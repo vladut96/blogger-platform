@@ -29,8 +29,8 @@ let UsersController = class UsersController {
     async createUser(dto) {
         return await this.usersService.createUser(dto);
     }
-    async deleteUserById(id) {
-        await this.usersService.deleteUserById(id);
+    async deleteUserById(_id) {
+        await this.usersService.deleteUserById(_id);
     }
 };
 exports.UsersController = UsersController;
@@ -53,7 +53,7 @@ __decorate([
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('id', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "deleteUserById", null);
 exports.UsersController = UsersController = __decorate([

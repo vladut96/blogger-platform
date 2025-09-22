@@ -104,11 +104,8 @@ export type RecoveryCodeModel = {
     recoveryCode: string;
     expirationDate: Date;
 };
-export interface UserAuthModel {
-    _id: ObjectId;
-    login: string;
-    email: string;
-    passwordHash: string;
+export interface UserID {
+    _id: Types.ObjectId;
 }
 export interface PasswordRecovery {
     recoveryCode: string | null;
