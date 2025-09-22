@@ -14,7 +14,7 @@ export declare class AuthController {
     }>;
     requestPasswordRecovery(dto: EmailDto): Promise<void>;
     setNewPassword(dto: NewPasswordDto): Promise<boolean>;
-    confirmEmail(code: CodeDto): Promise<void>;
+    confirmEmail(dto: CodeDto): Promise<void>;
     registerUser(dto: CreateUserDto): Promise<void>;
     resendConfirmationEmail(dto: EmailDto): Promise<void>;
     getMyInfo(user: JwtUser): {

@@ -41,19 +41,19 @@ let AuthController = class AuthController {
         return { accessToken: authResult.accessToken };
     }
     async requestPasswordRecovery(dto) {
-        return await this.authService.requestPasswordRecovery(dto);
+        return await this.authService.requestPasswordRecovery(dto.email);
     }
     async setNewPassword(dto) {
         return await this.authService.confirmPasswordRecovery(dto);
     }
-    async confirmEmail(code) {
-        return await this.authService.confirmEmail(code);
+    async confirmEmail(dto) {
+        return await this.authService.confirmEmail(dto.code);
     }
     async registerUser(dto) {
         return await this.authService.registerUser(dto);
     }
     async resendConfirmationEmail(dto) {
-        return await this.authService.resendConfirmationEmail(dto);
+        return await this.authService.resendConfirmationEmail(dto.email);
     }
     getMyInfo(user) {
         return {

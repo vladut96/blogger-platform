@@ -16,6 +16,7 @@ class EmailDto {
 exports.EmailDto = EmailDto;
 __decorate([
     (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], EmailDto.prototype, "email", void 0);
 //# sourceMappingURL=email.dto.js.map
