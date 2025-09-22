@@ -16,6 +16,7 @@ import { QueryUsersDto } from '../dto/query-users.dto';
 import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
 import { UsersService } from '../application/users.service';
 import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
+import { UserID } from '../../../../core/types/types';
 
 @UseGuards(BasicAuthGuard)
 @Controller('users')
@@ -33,7 +34,7 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteUserById(@Param('id', ParseMongoIdPipe) id: string) {
-    await this.usersService.deleteUserById(id);
+  async deleteUserById(@Param('id', ParseMongoIdPipe) _id: UserID) {
+    await this.usersService.deleteUserById(_id);
   }
 }

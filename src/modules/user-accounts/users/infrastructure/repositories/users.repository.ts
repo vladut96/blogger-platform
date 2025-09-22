@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, HydratedDocument, Model, SortOrder } from 'mongoose';
+import {
+  FilterQuery,
+  HydratedDocument,
+  Model,
+  SortOrder,
+  Types,
+} from 'mongoose';
 import { QueryUsersDto } from '../../dto/query-users.dto';
 import { User, UserDocument } from '../schemas/user.schema';
 import {
   EmailConfirmation,
   RecoveryCodeModel,
   RegisterUserDB,
+  UserID,
 } from '../../../../../core/types/types';
 import { EmailDto } from '../../../../../core/dto/email.dto';
 import { CodeDto } from '../../../auth/dto/confirmation-code.dto';
@@ -134,7 +141,7 @@ export class UsersRepository {
     return await this.userModel.create(newUser);
   }
 
-  async deleteUserById(userId: string): Promise<boolean> {
+  async deleteUserById(userId: UserID): Promise<boolean> {
     const result = await this.userModel.deleteOne({ _id: userId });
     return result.deletedCount > 0;
   }

@@ -8,15 +8,18 @@ import {
   DeviceSessionSchema,
 } from './infrastracture/schemas/auth.schema';
 import { UsersModule } from '../users/users.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from '../../../core/guards/jwt.strategy';
 
 @Module({
   imports: [
+    PassportModule,
     MongooseModule.forFeature([
       { name: DeviceSession.name, schema: DeviceSessionSchema },
     ]),
     UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthRepository],
+  providers: [AuthService, AuthRepository, JwtStrategy],
 })
 export class AuthModule {}
