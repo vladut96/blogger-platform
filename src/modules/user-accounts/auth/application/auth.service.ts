@@ -52,15 +52,31 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   async registerUser(dto: CreateUserDto): Promise<void> {
-    const existingUser = await this.usersService.getUserByLoginOrEmail(
+    const existingUserByEmail = await this.usersService.getUserByLoginOrEmail(
       dto.email,
+    );
+    const existingUserByLogin = await this.usersService.getUserByLoginOrEmail(
+      '', //instead of email
       dto.login,
     );
-    if (existingUser)
-      throw new ValidationException(
-        createFieldError('User already exists', 'user'),
-      );
 
+    if (existingUserByEmail || existingUserByLogin) {
+      const errors = [];
+
+      if (existingUserByEmail) {
+        errors.push(
+          createFieldError('User with this email already exists', 'email'),
+        );
+      }
+
+      if (existingUserByLogin) {
+        errors.push(
+          createFieldError('User with this login already exists', 'login'),
+        );
+      }
+
+      throw new ValidationException(errors);
+    }
     const newUser: UserDocument = await this.usersService.registerUser(dto);
 
     await nodemailerService.sendEmail(
@@ -78,8 +94,8 @@ export class AuthService {
     ) {
       throw new ValidationException(
         createFieldError(
-          'email',
           'The confirmation code is incorrect, expired or already been applied',
+          'email',
         ),
       );
     }
@@ -90,8 +106,8 @@ export class AuthService {
     if (!user || user.emailConfirmation.isConfirmed)
       throw new ValidationException(
         createFieldError(
-          'The confirmation code is incorrect, expired or already been applied',
-          'user',
+          'User with this email does not exist or already confirmed',
+          'email',
         ),
       );
 
@@ -103,20 +119,15 @@ export class AuthService {
       newConfirmation.expirationDate!,
     );
 
-    if (!updated)
-      throw new ValidationException(
-        createFieldError(
-          'The confirmation code is incorrect, expired or already been applied',
-          'user',
-        ),
-      );
-
     //no check is email was sent
-    void nodemailerService.sendEmail(
-      email,
-      newConfirmation.confirmationCode!,
-      nodemailerService.emailTemplates.registrationEmail,
-    );
+    if (updated) {
+      await nodemailerService.sendEmail(
+        email,
+        newConfirmation.confirmationCode!,
+        nodemailerService.emailTemplates.registrationEmail,
+      );
+    }
+    return;
   }
   async requestPasswordRecovery(email: string): Promise<void> {
     const user = await this.usersService.getUserByLoginOrEmail(email);

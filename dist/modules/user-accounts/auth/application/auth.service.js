@@ -49,9 +49,18 @@ let AuthService = class AuthService {
         return { accessToken, refreshToken };
     }
     async registerUser(dto) {
-        const existingUser = await this.usersService.getUserByLoginOrEmail(dto.email, dto.login);
-        if (existingUser)
-            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('User already exists', 'user'));
+        const existingUserByEmail = await this.usersService.getUserByLoginOrEmail(dto.email);
+        const existingUserByLogin = await this.usersService.getUserByLoginOrEmail('', dto.login);
+        if (existingUserByEmail || existingUserByLogin) {
+            const errors = [];
+            if (existingUserByEmail) {
+                errors.push((0, createFieldError_1.createFieldError)('User with this email already exists', 'email'));
+            }
+            if (existingUserByLogin) {
+                errors.push((0, createFieldError_1.createFieldError)('User with this login already exists', 'login'));
+            }
+            throw new custom_validation_exception_1.ValidationException(errors);
+        }
         const newUser = await this.usersService.registerUser(dto);
         await nodemailerService_1.nodemailerService.sendEmail(dto.email, newUser.emailConfirmation.confirmationCode, nodemailerService_1.nodemailerService.emailTemplates.registrationEmail);
     }
@@ -60,19 +69,20 @@ let AuthService = class AuthService {
         if (!user ||
             user.emailConfirmation.isConfirmed ||
             new Date() > user.emailConfirmation.expirationDate) {
-            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('email', 'The confirmation code is incorrect, expired or already been applied'));
+            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'email'));
         }
         return this.usersService.updateConfirmationStatus(user.email, true);
     }
     async resendConfirmationEmail(email) {
         const user = await this.usersService.getUserByLoginOrEmail(email);
         if (!user || user.emailConfirmation.isConfirmed)
-            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'user'));
+            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('User with this email does not exist or already confirmed', 'email'));
         const newConfirmation = email_confirmation_code_generator_1.EmailConfirmationFactory.create();
         const updated = await this.usersService.updateConfirmationCode(email, newConfirmation.confirmationCode, newConfirmation.expirationDate);
-        if (!updated)
-            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'user'));
-        void nodemailerService_1.nodemailerService.sendEmail(email, newConfirmation.confirmationCode, nodemailerService_1.nodemailerService.emailTemplates.registrationEmail);
+        if (updated) {
+            await nodemailerService_1.nodemailerService.sendEmail(email, newConfirmation.confirmationCode, nodemailerService_1.nodemailerService.emailTemplates.registrationEmail);
+        }
+        return;
     }
     async requestPasswordRecovery(email) {
         const user = await this.usersService.getUserByLoginOrEmail(email);
