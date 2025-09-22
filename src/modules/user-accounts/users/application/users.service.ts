@@ -14,8 +14,6 @@ import { NotFoundException } from '@nestjs/common';
 import { buildPaginator } from '../../../../core/utils/buildPaginator';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDocument } from '../infrastructure/schemas/user.schema';
-import { EmailDto } from '../../../../core/dto/email.dto';
-import { CodeDto } from '../../auth/dto/confirmation-code.dto';
 
 @injectable()
 export class UsersService {
@@ -31,12 +29,12 @@ export class UsersService {
     return buildPaginator(query, totalCount, items);
   }
   async getUserByLoginOrEmail(
-    email: string | EmailDto,
+    email: string,
     login?: string,
   ): Promise<null | UserDocument> {
     return await this.usersRepository.getUserByLoginOrEmail(email, login);
   }
-  async findUserByConfirmationCode(code: CodeDto) {
+  async findUserByConfirmationCode(code: string) {
     return await this.usersRepository.findUserByConfirmationCode(code);
   }
   async updateConfirmationStatus(
@@ -46,7 +44,7 @@ export class UsersService {
     return await this.usersRepository.updateConfirmationStatus(email, status);
   }
   async updateConfirmationCode(
-    email: EmailDto,
+    email: string,
     newCode: string,
     expirationDate: Date,
   ): Promise<boolean> {

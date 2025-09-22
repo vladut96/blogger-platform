@@ -38,6 +38,7 @@ __decorate([
             isConfirmed: { type: Boolean, default: false },
         },
         required: true,
+        _id: false,
     }),
     __metadata("design:type", Object)
 ], User.prototype, "emailConfirmation", void 0);
@@ -48,6 +49,7 @@ __decorate([
             expirationDate: { type: Date, default: null },
         },
         default: { recoveryCode: null, expirationDate: null },
+        _id: false,
     }),
     __metadata("design:type", Object)
 ], User.prototype, "passwordRecovery", void 0);

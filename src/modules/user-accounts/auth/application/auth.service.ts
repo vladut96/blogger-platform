@@ -4,7 +4,6 @@ import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { UsersService } from '../../users/application/users.service';
 import { UserDocument } from '../../users/infrastructure/schemas/user.schema';
 import { EmailConfirmationFactory } from '../../users/infrastructure/email-confirmation-code-generator';
-import { EmailDto } from '../../../../core/dto/email.dto';
 import { ValidationException } from '../../../../core/exceptions/custom-validation.exception';
 import { createFieldError } from '../../../../core/utils/createFieldError';
 import { randomUUID } from 'crypto';
@@ -17,7 +16,6 @@ import { UnauthorizedException } from '@nestjs/common';
 import { generateTokens } from '../../../../core/utils/generateTokens';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AuthRepository } from '../infrastracture/repositories/auth.repository';
-import { CodeDto } from '../dto/confirmation-code.dto';
 
 @injectable()
 export class AuthService {
@@ -71,7 +69,7 @@ export class AuthService {
       nodemailerService.emailTemplates.registrationEmail,
     );
   }
-  async confirmEmail(code: CodeDto): Promise<void> {
+  async confirmEmail(code: string): Promise<void> {
     const user = await this.usersService.findUserByConfirmationCode(code);
     if (
       !user ||
@@ -80,14 +78,14 @@ export class AuthService {
     ) {
       throw new ValidationException(
         createFieldError(
-          'user',
+          'email',
           'The confirmation code is incorrect, expired or already been applied',
         ),
       );
     }
     return this.usersService.updateConfirmationStatus(user.email, true);
   }
-  async resendConfirmationEmail(email: EmailDto) {
+  async resendConfirmationEmail(email: string) {
     const user = await this.usersService.getUserByLoginOrEmail(email);
     if (!user || user.emailConfirmation.isConfirmed)
       throw new ValidationException(
@@ -120,7 +118,7 @@ export class AuthService {
       nodemailerService.emailTemplates.registrationEmail,
     );
   }
-  async requestPasswordRecovery(email: EmailDto): Promise<void> {
+  async requestPasswordRecovery(email: string): Promise<void> {
     const user = await this.usersService.getUserByLoginOrEmail(email);
     if (!user) return;
 

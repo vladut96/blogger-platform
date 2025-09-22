@@ -1,12 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  FilterQuery,
-  HydratedDocument,
-  Model,
-  SortOrder,
-  Types,
-} from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, SortOrder } from 'mongoose';
 import { QueryUsersDto } from '../../dto/query-users.dto';
 import { User, UserDocument } from '../schemas/user.schema';
 import {
@@ -16,7 +10,6 @@ import {
   UserID,
 } from '../../../../../core/types/types';
 import { EmailDto } from '../../../../../core/dto/email.dto';
-import { CodeDto } from '../../../auth/dto/confirmation-code.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -72,7 +65,7 @@ export class UsersRepository {
     return this.userModel.findOne({ $or: or }).lean();
   }
   async findUserByConfirmationCode(
-    code: CodeDto,
+    code: string,
   ): Promise<RegisterUserDB<EmailConfirmation> | null> {
     return this.userModel
       .findOne({
@@ -91,7 +84,7 @@ export class UsersRepository {
   }
 
   async updateConfirmationCode(
-    email: EmailDto,
+    email: string,
     newCode: string,
     expirationDate: Date,
   ): Promise<boolean> {

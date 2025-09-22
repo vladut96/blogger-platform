@@ -22,6 +22,7 @@ export class User {
       isConfirmed: { type: Boolean, default: false },
     },
     required: true,
+    _id: false,
   })
   emailConfirmation!: {
     confirmationCode: string | null;
@@ -35,6 +36,7 @@ export class User {
       expirationDate: { type: Date, default: null },
     },
     default: { recoveryCode: null, expirationDate: null },
+    _id: false,
   })
   passwordRecovery!: {
     recoveryCode: string | null;

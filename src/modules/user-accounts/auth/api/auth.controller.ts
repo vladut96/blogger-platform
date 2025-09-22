@@ -56,7 +56,7 @@ export class AuthController {
   @Post('password-recovery')
   @HttpCode(HttpStatus.NO_CONTENT)
   async requestPasswordRecovery(@Body() dto: EmailDto) {
-    return await this.authService.requestPasswordRecovery(dto);
+    return await this.authService.requestPasswordRecovery(dto.email);
   }
   @Post('new-password')
   async setNewPassword(@Body() dto: NewPasswordDto) {
@@ -64,8 +64,8 @@ export class AuthController {
   }
   @Post('registration-confirmation')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async confirmEmail(@Body() code: CodeDto) {
-    return await this.authService.confirmEmail(code);
+  async confirmEmail(@Body() dto: CodeDto) {
+    return await this.authService.confirmEmail(dto.code);
   }
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -75,7 +75,7 @@ export class AuthController {
   @Post('registration-email-resending')
   @HttpCode(HttpStatus.NO_CONTENT)
   async resendConfirmationEmail(@Body() dto: EmailDto) {
-    return await this.authService.resendConfirmationEmail(dto);
+    return await this.authService.resendConfirmationEmail(dto.email);
   }
 
   @UseGuards(JwtAuthGuard)
