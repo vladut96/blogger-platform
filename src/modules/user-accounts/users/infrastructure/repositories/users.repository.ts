@@ -61,10 +61,10 @@ export class UsersRepository {
   }
 
   async getUserByLogin(login: string) {
-    return this.userModel.findOne({ login });
+    return this.userModel.findOne({ login }).lean();
   }
   async getUserByEmail(email: string) {
-    return this.userModel.findOne({ email });
+    return this.userModel.findOne({ email }).lean();
   }
   async findUserByConfirmationCode(
     code: string,

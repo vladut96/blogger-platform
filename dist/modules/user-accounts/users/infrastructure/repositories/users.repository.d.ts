@@ -16,26 +16,18 @@ export declare class UsersRepository {
     }> & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>) | null>;
-    getUserByLogin(login: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+    getUserByLogin(login: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;
-    }, {}, {}> & import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
-        _id: import("mongoose").Types.ObjectId;
-    } & {
-        __v: number;
-    } & Required<{
+    }> & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>) | null>;
-    getUserByEmail(email: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+    getUserByEmail(email: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
         _id: import("mongoose").Types.ObjectId;
     } & {
         __v: number;
-    }, {}, {}> & import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
-        _id: import("mongoose").Types.ObjectId;
-    } & {
-        __v: number;
-    } & Required<{
+    }> & Required<{
         _id: import("mongoose").Types.ObjectId;
     }>) | null>;
     findUserByConfirmationCode(code: string): Promise<RegisterUserDB<EmailConfirmation> | null>;

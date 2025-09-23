@@ -51,10 +51,10 @@ let UsersRepository = class UsersRepository {
             .lean();
     }
     async getUserByLogin(login) {
-        return this.userModel.findOne({ login });
+        return this.userModel.findOne({ login }).lean();
     }
     async getUserByEmail(email) {
-        return this.userModel.findOne({ email });
+        return this.userModel.findOne({ email }).lean();
     }
     async findUserByConfirmationCode(code) {
         return this.userModel
