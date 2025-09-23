@@ -24,8 +24,14 @@ let UsersService = class UsersService {
         const items = users.map((user) => user_entity_1.UserEntity.fromPersistence(user).toViewModel());
         return (0, buildPaginator_1.buildPaginator)(query, totalCount, items);
     }
-    async getUserByLoginOrEmail(email, login) {
-        return await this.usersRepository.getUserByLoginOrEmail(email, login);
+    async getUserByLoginOrEmail(loginOrEmail) {
+        return await this.usersRepository.getUserByLoginOrEmail(loginOrEmail);
+    }
+    async getUserByLogin(login) {
+        return this.usersRepository.getUserByLogin(login);
+    }
+    async getUserByEmail(email) {
+        return this.usersRepository.getUserByEmail(email);
     }
     async findUserByConfirmationCode(code) {
         return await this.usersRepository.findUserByConfirmationCode(code);

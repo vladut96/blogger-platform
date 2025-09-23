@@ -43,15 +43,18 @@ let UsersRepository = class UsersRepository {
             .limit(pageSize);
         return { users, totalCount };
     }
-    async getUserByLoginOrEmail(email, login) {
-        const or = [];
-        if (login)
-            or.push({ login });
-        if (email)
-            or.push({ email });
-        if (or.length === 0)
-            return null;
-        return this.userModel.findOne({ $or: or }).lean();
+    async getUserByLoginOrEmail(loginOrEmail) {
+        return this.userModel
+            .findOne({
+            $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+        })
+            .lean();
+    }
+    async getUserByLogin(login) {
+        return this.userModel.findOne({ login });
+    }
+    async getUserByEmail(email) {
+        return this.userModel.findOne({ email });
     }
     async findUserByConfirmationCode(code) {
         return this.userModel
