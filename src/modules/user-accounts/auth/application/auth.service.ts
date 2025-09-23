@@ -95,7 +95,7 @@ export class AuthService {
       throw new ValidationException(
         createFieldError(
           'The confirmation code is incorrect, expired or already been applied',
-          'email',
+          'code',
         ),
       );
     }

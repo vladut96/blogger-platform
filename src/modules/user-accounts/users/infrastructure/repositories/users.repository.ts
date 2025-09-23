@@ -9,7 +9,6 @@ import {
   RegisterUserDB,
   UserID,
 } from '../../../../../core/types/types';
-import { EmailDto } from '../../../../../core/dto/email.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -54,7 +53,7 @@ export class UsersRepository {
   }
 
   async getUserByLoginOrEmail(
-    email: string | EmailDto,
+    email: string,
     login?: string,
   ): Promise<null | UserDocument> {
     const or: any[] = [];
