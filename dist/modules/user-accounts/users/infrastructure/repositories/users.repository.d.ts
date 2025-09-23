@@ -9,7 +9,35 @@ export declare class UsersRepository {
         users: HydratedDocument<User>[];
         totalCount: number;
     }>;
-    getUserByLoginOrEmail(email: string, login?: string): Promise<null | UserDocument>;
+    getUserByLoginOrEmail(loginOrEmail: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }> & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>) | null>;
+    getUserByLogin(login: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }, {}, {}> & import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    } & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>) | null>;
+    getUserByEmail(email: string): Promise<(import("mongoose").Document<unknown, {}, import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }, {}, {}> & import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    } & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>) | null>;
     findUserByConfirmationCode(code: string): Promise<RegisterUserDB<EmailConfirmation> | null>;
     updateConfirmationStatus(email: string, status: boolean): Promise<void>;
     updateConfirmationCode(email: string, newCode: string, expirationDate: Date): Promise<boolean>;

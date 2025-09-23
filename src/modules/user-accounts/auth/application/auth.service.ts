@@ -52,11 +52,10 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
   async registerUser(dto: CreateUserDto): Promise<void> {
-    const existingUserByEmail = await this.usersService.getUserByLoginOrEmail(
+    const existingUserByEmail = await this.usersService.getUserByEmail(
       dto.email,
     );
-    const existingUserByLogin = await this.usersService.getUserByLoginOrEmail(
-      '', //instead of email
+    const existingUserByLogin = await this.usersService.getUserByLogin(
       dto.login,
     );
 
@@ -102,7 +101,7 @@ export class AuthService {
     return this.usersService.updateConfirmationStatus(user.email, true);
   }
   async resendConfirmationEmail(email: string) {
-    const user = await this.usersService.getUserByLoginOrEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
     if (!user || user.emailConfirmation.isConfirmed)
       throw new ValidationException(
         createFieldError(
@@ -130,7 +129,7 @@ export class AuthService {
     return;
   }
   async requestPasswordRecovery(email: string): Promise<void> {
-    const user = await this.usersService.getUserByLoginOrEmail(email);
+    const user = await this.usersService.getUserByEmail(email);
     if (!user) return;
 
     const recoveryCode = randomUUID();

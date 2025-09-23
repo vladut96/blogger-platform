@@ -29,10 +29,15 @@ export class UsersService {
     return buildPaginator(query, totalCount, items);
   }
   async getUserByLoginOrEmail(
-    email: string,
-    login?: string,
+    loginOrEmail: string,
   ): Promise<null | UserDocument> {
-    return await this.usersRepository.getUserByLoginOrEmail(email, login);
+    return await this.usersRepository.getUserByLoginOrEmail(loginOrEmail);
+  }
+  async getUserByLogin(login: string) {
+    return this.usersRepository.getUserByLogin(login);
+  }
+  async getUserByEmail(email: string) {
+    return this.usersRepository.getUserByEmail(email);
   }
   async findUserByConfirmationCode(code: string) {
     return await this.usersRepository.findUserByConfirmationCode(code);

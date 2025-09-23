@@ -52,16 +52,19 @@ export class UsersRepository {
     return { users, totalCount };
   }
 
-  async getUserByLoginOrEmail(
-    email: string,
-    login?: string,
-  ): Promise<null | UserDocument> {
-    const or: any[] = [];
-    if (login) or.push({ login });
-    if (email) or.push({ email });
-    if (or.length === 0) return null;
+  async getUserByLoginOrEmail(loginOrEmail: string) {
+    return this.userModel
+      .findOne({
+        $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+      })
+      .lean();
+  }
 
-    return this.userModel.findOne({ $or: or }).lean();
+  async getUserByLogin(login: string) {
+    return this.userModel.findOne({ login });
+  }
+  async getUserByEmail(email: string) {
+    return this.userModel.findOne({ email });
   }
   async findUserByConfirmationCode(
     code: string,
