@@ -67,15 +67,16 @@ let AuthService = class AuthService {
     async confirmEmail(code) {
         const user = await this.usersService.findUserByConfirmationCode(code);
         if (!user ||
-            user.emailConfirmation.isConfirmed ||
-            new Date() > user.emailConfirmation.expirationDate) {
+            user.emailConfirmation?.isConfirmed ||
+            user.emailConfirmation?.expirationDate === null ||
+            new Date() > user.emailConfirmation?.expirationDate) {
             throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'code'));
         }
         return this.usersService.updateConfirmationStatus(user.email, true);
     }
     async resendConfirmationEmail(email) {
         const user = await this.usersService.getUserByEmail(email);
-        if (!user || user.emailConfirmation.isConfirmed)
+        if (!user || user.emailConfirmation?.isConfirmed)
             throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('User with this email does not exist or already confirmed', 'email'));
         const newConfirmation = email_confirmation_code_generator_1.EmailConfirmationFactory.create();
         const updated = await this.usersService.updateConfirmationCode(email, newConfirmation.confirmationCode, newConfirmation.expirationDate);

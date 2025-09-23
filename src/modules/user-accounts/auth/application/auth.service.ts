@@ -88,8 +88,9 @@ export class AuthService {
     const user = await this.usersService.findUserByConfirmationCode(code);
     if (
       !user ||
-      user.emailConfirmation.isConfirmed ||
-      new Date() > user.emailConfirmation.expirationDate!
+      user.emailConfirmation?.isConfirmed ||
+      user.emailConfirmation?.expirationDate === null ||
+      new Date() > user.emailConfirmation?.expirationDate
     ) {
       throw new ValidationException(
         createFieldError(
@@ -102,7 +103,7 @@ export class AuthService {
   }
   async resendConfirmationEmail(email: string) {
     const user = await this.usersService.getUserByEmail(email);
-    if (!user || user.emailConfirmation.isConfirmed)
+    if (!user || user.emailConfirmation?.isConfirmed)
       throw new ValidationException(
         createFieldError(
           'User with this email does not exist or already confirmed',
