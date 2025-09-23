@@ -69,7 +69,7 @@ let AuthService = class AuthService {
         if (!user ||
             user.emailConfirmation.isConfirmed ||
             new Date() > user.emailConfirmation.expirationDate) {
-            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'email'));
+            throw new custom_validation_exception_1.ValidationException((0, createFieldError_1.createFieldError)('The confirmation code is incorrect, expired or already been applied', 'code'));
         }
         return this.usersService.updateConfirmationStatus(user.email, true);
     }
