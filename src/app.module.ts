@@ -5,7 +5,8 @@ import { BloggersPlatformModule } from './modules/bloggers-platform/bloggers-pla
 import { ConfigModule } from '@nestjs/config';
 import { TestingModule } from './modules/delete-all-testing/testing.module';
 import { AuthModule } from './modules/user-accounts/auth/auth.module';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 10,
+          ttl: 30_000,
           limit: 5,
         },
       ],
@@ -23,6 +24,12 @@ import { ThrottlerModule } from '@nestjs/throttler';
     BloggersPlatformModule,
     AuthModule,
     TestingModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}

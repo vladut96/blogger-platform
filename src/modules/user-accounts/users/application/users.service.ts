@@ -4,7 +4,7 @@ import {
   Paginator,
   RecoveryCodeModel,
   RegisterUserDB,
-  UserID,
+  MongoID,
   UserViewModel,
 } from '../../../../core/types/types';
 import { UserEntity } from '../domain/user.entity';
@@ -85,7 +85,7 @@ export class UsersService {
 
     return await this.usersRepository.save(userEntity.toPersistence());
   }
-  async deleteUserById(userId: UserID): Promise<void> {
+  async deleteUserById(userId: MongoID): Promise<void> {
     const deletedUser = await this.usersRepository.deleteUserById(userId);
     if (!deletedUser) throw new NotFoundException();
   }

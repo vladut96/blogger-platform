@@ -13,7 +13,6 @@ import {
   PostReaction,
   PostReactionDocument,
 } from '../schemas/post-reaction.schema';
-import { CreateOrUpdatePostDto } from '../../dto/create-or-update-post.dto';
 import { PaginationDto } from '../../../../../core/dto/pagination.dto';
 
 @injectable()
@@ -57,7 +56,7 @@ export class PostsRepository {
     const res = await this.postModel.deleteOne({ _id: id }).exec();
     return res.deletedCount > 0;
   }
-  async setLikeStatus(
+  async setPostLikeStatus(
     postId: string,
     userId: string,
     userLogin: string,

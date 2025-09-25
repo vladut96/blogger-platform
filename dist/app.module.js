@@ -15,6 +15,7 @@ const config_1 = require("@nestjs/config");
 const testing_module_1 = require("./modules/delete-all-testing/testing.module");
 const auth_module_1 = require("./modules/user-accounts/auth/auth.module");
 const throttler_1 = require("@nestjs/throttler");
+const core_1 = require("@nestjs/core");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -26,7 +27,7 @@ exports.AppModule = AppModule = __decorate([
             throttler_1.ThrottlerModule.forRoot({
                 throttlers: [
                     {
-                        ttl: 10,
+                        ttl: 30_000,
                         limit: 5,
                     },
                 ],
@@ -35,6 +36,12 @@ exports.AppModule = AppModule = __decorate([
             bloggers_platform_module_1.BloggersPlatformModule,
             auth_module_1.AuthModule,
             testing_module_1.TestingModule,
+        ],
+        providers: [
+            {
+                provide: core_1.APP_GUARD,
+                useClass: throttler_1.ThrottlerGuard,
+            },
         ],
     })
 ], AppModule);

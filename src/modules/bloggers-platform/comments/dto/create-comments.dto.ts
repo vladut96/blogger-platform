@@ -1,7 +1,5 @@
-import { IsString, IsUrl, Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class CreateCommentsDto {
-  @IsString() @Length(1, 15) name!: string;
-  @IsString() @Length(1, 500) description!: string;
-  @IsUrl() @Length(1, 100) websiteUrl!: string;
+  @IsString() @Length(20, 300) content!: string;
 }

@@ -7,7 +7,7 @@ import {
   EmailConfirmation,
   RecoveryCodeModel,
   RegisterUserDB,
-  UserID,
+  MongoID,
 } from '../../../../../core/types/types';
 
 @Injectable()
@@ -136,7 +136,7 @@ export class UsersRepository {
     return await this.userModel.create(newUser);
   }
 
-  async deleteUserById(userId: UserID): Promise<boolean> {
+  async deleteUserById(userId: MongoID): Promise<boolean> {
     const result = await this.userModel.deleteOne({ _id: userId });
     return result.deletedCount > 0;
   }

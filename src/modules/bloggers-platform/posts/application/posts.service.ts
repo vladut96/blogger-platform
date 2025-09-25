@@ -9,6 +9,7 @@ import {
   Paginator,
   PostViewModel,
   PaginationQuery,
+  LikeStatus,
 } from '../../../../core/types/types';
 import { PostEntity } from '../domain/posts.entity';
 import { buildPaginator } from '../../../../core/utils/buildPaginator';
@@ -52,6 +53,20 @@ export class PostsService {
   async deletePostById(postId: string): Promise<void> {
     const deletedPost = await this.postsRepository.deletePostById(postId);
     if (!deletedPost) throw new NotFoundException();
+  }
+  async setPostLikeStatus(
+    postId: string,
+    userId: string,
+    userLogin: string,
+    likeStatus: LikeStatus,
+  ) {
+    const result = await this.postsRepository.setPostLikeStatus(
+      postId,
+      userId,
+      userLogin,
+      likeStatus,
+    );
+    if (result === 'NOT_FOUND') throw new NotFoundException();
   }
 }
 

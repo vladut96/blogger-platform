@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { LikeStatus, CommentViewModel } from '../../../../core/types/types';
 import { CommentsRepository } from '../infrastructure/repositories/comments.repository';
-import { NotFoundException } from '@nestjs/common';
+import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 @injectable()
 export class CommentsService {
@@ -21,44 +21,26 @@ export class CommentsService {
     commentId: string,
     content: string,
     userId: string,
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<void> {
     const comment = await this.commentsRepository.getCommentById(
       commentId,
       userId,
     );
     if (!comment) {
-      return { success: false, error: 'Comment not found' };
+      throw new NotFoundException();
     }
     if (comment.commentatorInfo.userId !== userId) {
-      return { success: false, error: 'Access denied' };
+      throw new ForbiddenException();
     }
 
-    const updated = await this.commentsRepository.updateComment(
-      commentId,
-      content,
-    );
-    if (!updated) {
-      return { success: false, error: 'Error updating comment' };
-    }
-
-    return { success: true };
+    await this.commentsRepository.updateComment(commentId, content);
   }
-  async deleteComment(
-    commentId: string,
-    userId: string,
-  ): Promise<{ success: boolean; error?: string }> {
+  async deleteComment(commentId: string, userId: string): Promise<void> {
     const comment = await this.commentsRepository.getCommentById(commentId);
-    if (!comment) {
-      return { success: false, error: 'Comment not found' };
-    }
-    if (comment.commentatorInfo.userId !== userId) {
-      return { success: false, error: 'Access denied' };
-    }
-    const deleted = await this.commentsRepository.deleteComment(commentId);
-    if (!deleted) {
-      return { success: false, error: 'Error deleting comment' };
-    }
-    return { success: true };
+    if (!comment) throw new NotFoundException();
+    if (comment.commentatorInfo.userId !== userId)
+      throw new ForbiddenException();
+    await this.commentsRepository.deleteComment(commentId);
   }
   async getCommentsByPostId({
     postId,
@@ -101,17 +83,12 @@ export class CommentsService {
     commentId: string,
     userId: string,
     likeStatus: LikeStatus,
-  ): Promise<{ success: boolean }> {
-    const updated = await this.commentsRepository.updateLikeStatus(
-      commentId,
-      userId,
-      likeStatus,
-    );
-
-    if (!updated) {
-      return { success: false };
+  ): Promise<void> {
+    const comment =
+      await this.commentsRepository.getCommentDocumentById(commentId);
+    if (!comment) {
+      throw new NotFoundException();
     }
-
-    return { success: true };
+    await this.commentsRepository.updateLikeStatus(comment, userId, likeStatus);
   }
 }

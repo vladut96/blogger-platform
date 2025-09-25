@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Types, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { injectable } from 'inversify';
 import { CommentViewModel, LikeStatus } from '../../../../../core/types/types';
 import { Comment, CommentDocument } from '../schemas/comments.schema';
@@ -15,8 +15,6 @@ export class CommentsRepository {
     commentId: string,
     currentUserId?: string,
   ): Promise<CommentViewModel | null> {
-    if (!Types.ObjectId.isValid(commentId)) return null;
-
     const comment = await this.commentModel.findById(commentId).lean();
     if (!comment) return null;
 
@@ -46,20 +44,20 @@ export class CommentsRepository {
       },
     };
   }
+  async getCommentDocumentById(
+    commentId: string,
+  ): Promise<CommentDocument | null> {
+    return this.commentModel.findById(commentId).exec();
+  }
   async updateComment(commentId: string, content: string): Promise<boolean> {
-    if (!Types.ObjectId.isValid(commentId)) return false;
-
     const result = await this.commentModel
       .updateOne({ _id: commentId }, { $set: { content } })
       .exec();
 
     return result.matchedCount > 0;
   }
-  async deleteComment(commentId: string): Promise<boolean> {
-    if (!Types.ObjectId.isValid(commentId)) return false;
-
-    const result = await this.commentModel.deleteOne({ _id: commentId }).exec();
-    return result.deletedCount > 0;
+  async deleteComment(commentId: string): Promise<void> {
+    await this.commentModel.deleteOne({ _id: commentId }).exec();
   }
   async getCommentsByPostId({
     postId,
@@ -162,21 +160,14 @@ export class CommentsRepository {
     };
   }
   async updateLikeStatus(
-    commentId: string,
+    comment: CommentDocument,
     userId: string,
     likeStatus: LikeStatus,
-  ): Promise<boolean> {
-    if (!Types.ObjectId.isValid(commentId)) return false;
-
-    const comment = await this.commentModel.findById(commentId);
-    if (!comment) return false;
-
-    // Находим существующий лайк пользователя
+  ): Promise<void> {
     const existingLikeIndex = comment.likes.findIndex(
       (like) => like.userId === userId,
     );
 
-    // Удаляем предыдущий статус если он есть
     if (existingLikeIndex !== -1) {
       const oldStatus = comment.likes[existingLikeIndex].status;
       if (oldStatus === 'Like') comment.likesCount--;
@@ -184,7 +175,6 @@ export class CommentsRepository {
       comment.likes.splice(existingLikeIndex, 1);
     }
 
-    // Добавляем новый статус если он не 'None'
     if (likeStatus !== 'None') {
       comment.likes.push({
         userId,
@@ -194,9 +184,6 @@ export class CommentsRepository {
       if (likeStatus === 'Like') comment.likesCount++;
       if (likeStatus === 'Dislike') comment.dislikesCount++;
     }
-
-    console.log(comment);
     await comment.save();
-    return true;
   }
 }
