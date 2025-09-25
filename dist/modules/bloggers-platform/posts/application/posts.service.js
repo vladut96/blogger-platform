@@ -54,6 +54,11 @@ let PostsService = class PostsService {
         if (!deletedPost)
             throw new common_1.NotFoundException();
     }
+    async setPostLikeStatus(postId, userId, userLogin, likeStatus) {
+        const result = await this.postsRepository.setPostLikeStatus(postId, userId, userLogin, likeStatus);
+        if (result === 'NOT_FOUND')
+            throw new common_1.NotFoundException();
+    }
 };
 exports.PostsService = PostsService;
 exports.PostsService = PostsService = __decorate([

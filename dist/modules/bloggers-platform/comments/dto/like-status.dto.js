@@ -9,14 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateCommentsDto = void 0;
+exports.LikeStatusDto = exports.LikeStatusEnum = void 0;
 const class_validator_1 = require("class-validator");
-class CreateCommentsDto {
+var LikeStatusEnum;
+(function (LikeStatusEnum) {
+    LikeStatusEnum["None"] = "None";
+    LikeStatusEnum["Like"] = "Like";
+    LikeStatusEnum["Dislike"] = "Dislike";
+})(LikeStatusEnum || (exports.LikeStatusEnum = LikeStatusEnum = {}));
+class LikeStatusDto {
 }
-exports.CreateCommentsDto = CreateCommentsDto;
+exports.LikeStatusDto = LikeStatusDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.Length)(20, 300),
+    (0, class_validator_1.IsEnum)(LikeStatusEnum),
     __metadata("design:type", String)
-], CreateCommentsDto.prototype, "content", void 0);
-//# sourceMappingURL=create-comments.dto.js.map
+], LikeStatusDto.prototype, "likeStatus", void 0);
+//# sourceMappingURL=like-status.dto.js.map

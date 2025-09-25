@@ -20,6 +20,7 @@ const create_blog_dto_1 = require("../dto/create-blog.dto");
 const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
 const posts_service_1 = require("../../posts/application/posts.service");
 const create_or_update_post_dto_1 = require("../../posts/dto/create-or-update-post.dto");
+const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 let BlogsController = class BlogsController {
     constructor(blogsService, blogsQueryService, postsQueryService, postsService) {
         this.blogsService = blogsService;
@@ -58,6 +59,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "getBlogs", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -73,6 +75,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "getPostsByBlogId", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':blogId/posts'),
     __param(0, (0, common_1.Param)('blogId')),
     __param(1, (0, common_1.Body)()),
@@ -88,6 +91,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "getBlogById", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),
@@ -97,6 +101,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "updateBlog", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(204),
     __param(0, (0, common_1.Param)('id')),

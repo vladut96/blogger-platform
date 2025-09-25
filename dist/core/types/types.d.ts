@@ -104,7 +104,7 @@ export type RecoveryCodeModel = {
     recoveryCode: string;
     expirationDate: Date;
 };
-export interface UserID {
+export interface MongoID {
     _id: Types.ObjectId;
 }
 export interface PasswordRecovery {

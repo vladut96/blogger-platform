@@ -1,7 +1,7 @@
 import { CreateUserDto } from '../dto/create-user.dto';
 import { QueryUsersDto } from '../dto/query-users.dto';
 import { UsersService } from '../application/users.service';
-import { UserID } from '../../../../core/types/types';
+import { MongoID } from '../../../../core/types/types';
 export declare class UsersController {
     private readonly usersService;
     constructor(usersService: UsersService);
@@ -12,5 +12,5 @@ export declare class UsersController {
         email: string;
         createdAt: string;
     }>;
-    deleteUserById(_id: UserID): Promise<void>;
+    deleteUserById(_id: MongoID): Promise<void>;
 }

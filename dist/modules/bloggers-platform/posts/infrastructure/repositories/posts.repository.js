@@ -92,7 +92,7 @@ let PostsRepository = class PostsRepository {
         const res = await this.postModel.deleteOne({ _id: id }).exec();
         return res.deletedCount > 0;
     }
-    async setLikeStatus(postId, userId, userLogin, likeStatus) {
+    async setPostLikeStatus(postId, userId, userLogin, likeStatus) {
         const session = await mongoose_1.default.startSession();
         try {
             let outcome = 'OK';

@@ -22,8 +22,6 @@ let CommentsRepository = class CommentsRepository {
         this.commentModel = commentModel;
     }
     async getCommentById(commentId, currentUserId) {
-        if (!mongoose_2.Types.ObjectId.isValid(commentId))
-            return null;
         const comment = await this.commentModel.findById(commentId).lean();
         if (!comment)
             return null;
@@ -49,19 +47,17 @@ let CommentsRepository = class CommentsRepository {
             },
         };
     }
+    async getCommentDocumentById(commentId) {
+        return this.commentModel.findById(commentId).exec();
+    }
     async updateComment(commentId, content) {
-        if (!mongoose_2.Types.ObjectId.isValid(commentId))
-            return false;
         const result = await this.commentModel
             .updateOne({ _id: commentId }, { $set: { content } })
             .exec();
         return result.matchedCount > 0;
     }
     async deleteComment(commentId) {
-        if (!mongoose_2.Types.ObjectId.isValid(commentId))
-            return false;
-        const result = await this.commentModel.deleteOne({ _id: commentId }).exec();
-        return result.deletedCount > 0;
+        await this.commentModel.deleteOne({ _id: commentId }).exec();
     }
     async getCommentsByPostId({ postId, pageNumber, pageSize, sortBy, sortDirection, currentUserId, }) {
         const filter = { postId };
@@ -134,12 +130,7 @@ let CommentsRepository = class CommentsRepository {
             },
         };
     }
-    async updateLikeStatus(commentId, userId, likeStatus) {
-        if (!mongoose_2.Types.ObjectId.isValid(commentId))
-            return false;
-        const comment = await this.commentModel.findById(commentId);
-        if (!comment)
-            return false;
+    async updateLikeStatus(comment, userId, likeStatus) {
         const existingLikeIndex = comment.likes.findIndex((like) => like.userId === userId);
         if (existingLikeIndex !== -1) {
             const oldStatus = comment.likes[existingLikeIndex].status;
@@ -160,9 +151,7 @@ let CommentsRepository = class CommentsRepository {
             if (likeStatus === 'Dislike')
                 comment.dislikesCount++;
         }
-        console.log(comment);
         await comment.save();
-        return true;
     }
 };
 exports.CommentsRepository = CommentsRepository;

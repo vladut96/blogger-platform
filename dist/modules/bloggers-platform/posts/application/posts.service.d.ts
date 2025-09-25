@@ -1,6 +1,6 @@
 import { PostsQueryRepository, PostsRepository } from '../infrastructure/repositories/posts.repository';
 import { BlogsQueryRepository } from '../../blogs/infrastructure/repositories/blogs.repository';
-import { PostInputModel, Paginator, PostViewModel, PaginationQuery } from '../../../../core/types/types';
+import { PostInputModel, Paginator, PostViewModel, PaginationQuery, LikeStatus } from '../../../../core/types/types';
 import { PaginationDto } from '../../../../core/dto/pagination.dto';
 import { CreateOrUpdatePostDto } from '../dto/create-or-update-post.dto';
 export declare class PostsService {
@@ -10,6 +10,7 @@ export declare class PostsService {
     createPost(postPayload: CreateOrUpdatePostDto): Promise<PostViewModel>;
     updatePost(id: string, updateData: PostInputModel): Promise<void>;
     deletePostById(postId: string): Promise<void>;
+    setPostLikeStatus(postId: string, userId: string, userLogin: string, likeStatus: LikeStatus): Promise<void>;
 }
 export declare class PostsQueryService {
     private readonly postsQueryRepository;

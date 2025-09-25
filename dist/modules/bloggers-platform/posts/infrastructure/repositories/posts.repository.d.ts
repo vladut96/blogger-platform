@@ -11,7 +11,7 @@ export declare class PostsRepository {
     getById(id: string): Promise<PostEntity | null>;
     save(entity: PostEntity): Promise<PostEntity>;
     deletePostById(id: string): Promise<boolean>;
-    setLikeStatus(postId: string, userId: string, userLogin: string, likeStatus: LikeStatus): Promise<'OK' | 'NOT_FOUND'>;
+    setPostLikeStatus(postId: string, userId: string, userLogin: string, likeStatus: LikeStatus): Promise<'OK' | 'NOT_FOUND'>;
 }
 export declare class PostsQueryRepository {
     private readonly postModel;

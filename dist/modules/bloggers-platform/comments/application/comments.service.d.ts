@@ -4,14 +4,8 @@ export declare class CommentsService {
     private readonly commentsRepository;
     constructor(commentsRepository: CommentsRepository);
     getCommentById(commentId: string, currentUserId?: string): Promise<CommentViewModel>;
-    updateComment(commentId: string, content: string, userId: string): Promise<{
-        success: boolean;
-        error?: string;
-    }>;
-    deleteComment(commentId: string, userId: string): Promise<{
-        success: boolean;
-        error?: string;
-    }>;
+    updateComment(commentId: string, content: string, userId: string): Promise<void>;
+    deleteComment(commentId: string, userId: string): Promise<void>;
     getCommentsByPostId({ postId, pageNumber, pageSize, sortBy, sortDirection, currentUserId, }: {
         postId: string;
         pageNumber: number;
@@ -53,7 +47,5 @@ export declare class CommentsService {
             myStatus: string;
         };
     }>;
-    updateLikeStatus(commentId: string, userId: string, likeStatus: LikeStatus): Promise<{
-        success: boolean;
-    }>;
+    updateLikeStatus(commentId: string, userId: string, likeStatus: LikeStatus): Promise<void>;
 }

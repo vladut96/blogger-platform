@@ -26,30 +26,20 @@ let CommentsService = class CommentsService {
     async updateComment(commentId, content, userId) {
         const comment = await this.commentsRepository.getCommentById(commentId, userId);
         if (!comment) {
-            return { success: false, error: 'Comment not found' };
+            throw new common_1.NotFoundException();
         }
         if (comment.commentatorInfo.userId !== userId) {
-            return { success: false, error: 'Access denied' };
+            throw new common_1.ForbiddenException();
         }
-        const updated = await this.commentsRepository.updateComment(commentId, content);
-        if (!updated) {
-            return { success: false, error: 'Error updating comment' };
-        }
-        return { success: true };
+        await this.commentsRepository.updateComment(commentId, content);
     }
     async deleteComment(commentId, userId) {
         const comment = await this.commentsRepository.getCommentById(commentId);
-        if (!comment) {
-            return { success: false, error: 'Comment not found' };
-        }
-        if (comment.commentatorInfo.userId !== userId) {
-            return { success: false, error: 'Access denied' };
-        }
-        const deleted = await this.commentsRepository.deleteComment(commentId);
-        if (!deleted) {
-            return { success: false, error: 'Error deleting comment' };
-        }
-        return { success: true };
+        if (!comment)
+            throw new common_1.NotFoundException();
+        if (comment.commentatorInfo.userId !== userId)
+            throw new common_1.ForbiddenException();
+        await this.commentsRepository.deleteComment(commentId);
     }
     async getCommentsByPostId({ postId, pageNumber, pageSize, sortBy, sortDirection, currentUserId, }) {
         return await this.commentsRepository.getCommentsByPostId({
@@ -65,11 +55,11 @@ let CommentsService = class CommentsService {
         return await this.commentsRepository.createComment(postId, content, userId, userLogin);
     }
     async updateLikeStatus(commentId, userId, likeStatus) {
-        const updated = await this.commentsRepository.updateLikeStatus(commentId, userId, likeStatus);
-        if (!updated) {
-            return { success: false };
+        const comment = await this.commentsRepository.getCommentDocumentById(commentId);
+        if (!comment) {
+            throw new common_1.NotFoundException();
         }
-        return { success: true };
+        await this.commentsRepository.updateLikeStatus(comment, userId, likeStatus);
     }
 };
 exports.CommentsService = CommentsService;

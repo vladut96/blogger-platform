@@ -1,4 +1,4 @@
-import { EmailConfirmation, Paginator, RecoveryCodeModel, RegisterUserDB, UserID, UserViewModel } from '../../../../core/types/types';
+import { EmailConfirmation, Paginator, RecoveryCodeModel, RegisterUserDB, MongoID, UserViewModel } from '../../../../core/types/types';
 import { UsersRepository } from '../infrastructure/repositories/users.repository';
 import { QueryUsersDto } from '../dto/query-users.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -39,5 +39,5 @@ export declare class UsersService {
     } & {
         __v: number;
     }>;
-    deleteUserById(userId: UserID): Promise<void>;
+    deleteUserById(userId: MongoID): Promise<void>;
 }

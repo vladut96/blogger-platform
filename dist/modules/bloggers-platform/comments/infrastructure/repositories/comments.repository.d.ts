@@ -5,8 +5,9 @@ export declare class CommentsRepository {
     private readonly commentModel;
     constructor(commentModel: Model<CommentDocument>);
     getCommentById(commentId: string, currentUserId?: string): Promise<CommentViewModel | null>;
+    getCommentDocumentById(commentId: string): Promise<CommentDocument | null>;
     updateComment(commentId: string, content: string): Promise<boolean>;
-    deleteComment(commentId: string): Promise<boolean>;
+    deleteComment(commentId: string): Promise<void>;
     getCommentsByPostId({ postId, pageNumber, pageSize, sortBy, sortDirection, currentUserId, }: {
         postId: string;
         pageNumber: number;
@@ -48,5 +49,5 @@ export declare class CommentsRepository {
             myStatus: string;
         };
     }>;
-    updateLikeStatus(commentId: string, userId: string, likeStatus: LikeStatus): Promise<boolean>;
+    updateLikeStatus(comment: CommentDocument, userId: string, likeStatus: LikeStatus): Promise<void>;
 }

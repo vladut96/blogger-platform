@@ -1,5 +1,4 @@
 import { PipeTransform } from '@nestjs/common';
-import { Types } from 'mongoose';
-export declare class ParseMongoIdPipe implements PipeTransform<string, Types.ObjectId> {
-    transform(value: string): Types.ObjectId;
+export declare class ParseMongoIdPipe implements PipeTransform<string, string> {
+    transform(value: string): string;
 }

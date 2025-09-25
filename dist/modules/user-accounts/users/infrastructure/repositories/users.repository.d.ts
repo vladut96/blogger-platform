@@ -1,7 +1,7 @@
 import { HydratedDocument, Model } from 'mongoose';
 import { QueryUsersDto } from '../../dto/query-users.dto';
 import { User, UserDocument } from '../schemas/user.schema';
-import { EmailConfirmation, RecoveryCodeModel, RegisterUserDB, UserID } from '../../../../../core/types/types';
+import { EmailConfirmation, RecoveryCodeModel, RegisterUserDB, MongoID } from '../../../../../core/types/types';
 export declare class UsersRepository {
     private readonly userModel;
     constructor(userModel: Model<UserDocument>);
@@ -37,5 +37,5 @@ export declare class UsersRepository {
     findUserByRecoveryCode(recoveryCode: string): Promise<RegisterUserDB<EmailConfirmation> | null>;
     updateUserPassword(email: string, newPasswordHash: string): Promise<boolean>;
     save(newUser: User): Promise<UserDocument>;
-    deleteUserById(userId: UserID): Promise<boolean>;
+    deleteUserById(userId: MongoID): Promise<boolean>;
 }
