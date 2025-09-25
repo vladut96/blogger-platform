@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 throttlers: [
                     {
                         ttl: 30_000,
-                        limit: 5,
+                        limit: 500,
                     },
                 ],
             }),
