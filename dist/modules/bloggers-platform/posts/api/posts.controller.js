@@ -20,7 +20,6 @@ const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
 const comments_service_1 = require("../../comments/application/comments.service");
 const query_comments_dto_1 = require("../../comments/dto/query-comments.dto");
 const create_comments_dto_1 = require("../../comments/dto/create-comments.dto");
-const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const like_status_dto_1 = require("../../comments/dto/like-status.dto");
 let PostsController = class PostsController {
@@ -56,7 +55,6 @@ let PostsController = class PostsController {
 };
 exports.PostsController = PostsController;
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':postId/like-status'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('postId')),
@@ -75,7 +73,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "getCommentsForPost", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':postId/comments'),
     __param(0, (0, common_1.Param)('postId')),
     __param(1, (0, common_1.Body)('content')),
@@ -92,7 +89,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "getPosts", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -107,7 +103,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "getPostById", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('id')),
@@ -117,7 +112,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "updatePost", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('id')),

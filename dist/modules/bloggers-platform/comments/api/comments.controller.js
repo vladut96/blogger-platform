@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentsController = void 0;
 const common_1 = require("@nestjs/common");
 const comments_service_1 = require("../application/comments.service");
-const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const like_status_dto_1 = require("../dto/like-status.dto");
 const create_comments_dto_1 = require("../dto/create-comments.dto");
@@ -39,7 +38,6 @@ let CommentsController = class CommentsController {
 };
 exports.CommentsController = CommentsController;
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':commentId/like-status'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
@@ -50,7 +48,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "updateLikeStatus", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)('comments/:commentId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
@@ -61,7 +58,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "updateComment", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':commentId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),

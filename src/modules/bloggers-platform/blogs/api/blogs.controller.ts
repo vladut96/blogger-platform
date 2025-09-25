@@ -34,7 +34,7 @@ export class BlogsController {
   async getBlogs(@Query() query: QueryBlogsDto) {
     return await this.blogsQueryService.getBlogs(query);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
   async createBlog(@Body() dto: CreateBlogDto) {
     return await this.blogsService.createBlog(dto);
@@ -46,7 +46,7 @@ export class BlogsController {
   ) {
     return this.postsQueryService.getPostsByBlogId(blogId, query);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post(':blogId/posts')
   async createPost(
     @Param('blogId') blogId: string,
@@ -59,13 +59,13 @@ export class BlogsController {
   async getBlogById(@Param('id') id: string) {
     return await this.blogsQueryService.getBlogById(id);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put(':id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() dto: CreateBlogDto) {
     return this.blogsService.updateBlog(id, dto);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {

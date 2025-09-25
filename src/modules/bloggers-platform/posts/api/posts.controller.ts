@@ -29,7 +29,7 @@ export class PostsController {
     private readonly postsQueryService: PostsQueryService,
     private readonly commentService: CommentsService,
   ) {}
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put(':postId/like-status')
   @HttpCode(HttpStatus.NO_CONTENT)
   async setPostLikeStatus(
@@ -51,7 +51,7 @@ export class PostsController {
   ) {
     return this.commentService.getCommentsByPostId({ ...query, postId });
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post(':postId/comments')
   async createPostsComments(
     @Param('postId') postId: string,
@@ -69,7 +69,7 @@ export class PostsController {
   getPosts(@Query() query: PaginationDto) {
     return this.postsQueryService.getPosts(query);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
   async createPost(@Body() dto: CreateOrUpdatePostDto) {
     return this.postsService.createPost(dto);
@@ -78,7 +78,7 @@ export class PostsController {
   async getPostById(@Param('id') id: string) {
     return this.postsQueryService.getPostById(id);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updatePost(
@@ -87,7 +87,7 @@ export class PostsController {
   ) {
     return this.postsService.updatePost(id, dto);
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deletePostById(@Param('id') id: string) {

@@ -20,7 +20,7 @@ import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put(':commentId/like-status')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateLikeStatus(
@@ -34,7 +34,7 @@ export class CommentsController {
       likeStatus.likeStatus,
     );
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put('comments/:commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateComment(
@@ -48,7 +48,7 @@ export class CommentsController {
       user.userId,
     );
   }
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Delete(':commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteComment(
