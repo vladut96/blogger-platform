@@ -15,10 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentsController = void 0;
 const common_1 = require("@nestjs/common");
 const comments_service_1 = require("../application/comments.service");
+const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const like_status_dto_1 = require("../dto/like-status.dto");
 const create_comments_dto_1 = require("../dto/create-comments.dto");
 const parse_mongo_id_pipe_1 = require("../../../../core/pipes/parse-mongo-id.pipe");
+const optinal_jwt_auth_guard_1 = require("../../../../core/guards/optinal-jwt-auth-guard");
 let CommentsController = class CommentsController {
     constructor(commentService) {
         this.commentService = commentService;
@@ -32,12 +34,13 @@ let CommentsController = class CommentsController {
     async deleteComment(commentId, user) {
         return this.commentService.deleteComment(commentId, user.userId);
     }
-    async getCommentById(id) {
-        return this.commentService.getCommentById(id);
+    async getCommentById(id, user) {
+        return this.commentService.getCommentById(id, user?.userId);
     }
 };
 exports.CommentsController = CommentsController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':commentId/like-status'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
@@ -48,6 +51,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "updateLikeStatus", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)('comments/:commentId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
@@ -58,6 +62,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "updateComment", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':commentId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
@@ -67,10 +72,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "deleteComment", null);
 __decorate([
+    (0, common_1.UseGuards)(optinal_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], CommentsController.prototype, "getCommentById", null);
 exports.CommentsController = CommentsController = __decorate([

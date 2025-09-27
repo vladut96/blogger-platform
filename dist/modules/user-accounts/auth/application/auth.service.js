@@ -62,6 +62,7 @@ let AuthService = class AuthService {
             throw new custom_validation_exception_1.ValidationException(errors);
         }
         const newUser = await this.usersService.registerUser(dto);
+        console.log('before send email and after service flow with emailConfiramtion code', newUser.emailConfirmation);
         await nodemailerService_1.nodemailerService.sendEmail(dto.email, newUser.emailConfirmation.confirmationCode, nodemailerService_1.nodemailerService.emailTemplates.registrationEmail);
     }
     async confirmEmail(code) {

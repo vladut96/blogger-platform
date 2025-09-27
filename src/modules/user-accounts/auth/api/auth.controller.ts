@@ -26,6 +26,7 @@ import { CodeDto } from '../dto/confirmation-code.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('login')
+  @HttpCode(HttpStatus.OK)
   async login(
     @Body() dto: LoginDto,
     @Ip() ip: string,
@@ -70,7 +71,7 @@ export class AuthController {
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
   async registerUser(@Body() dto: CreateUserDto) {
-    return await this.authService.registerUser(dto);
+    await this.authService.registerUser(dto);
   }
   @Post('registration-email-resending')
   @HttpCode(HttpStatus.NO_CONTENT)

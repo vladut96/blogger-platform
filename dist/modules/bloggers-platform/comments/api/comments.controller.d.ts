@@ -8,5 +8,5 @@ export declare class CommentsController {
     updateLikeStatus(commentId: string, likeStatus: LikeStatusDto, user: JwtUser): Promise<void>;
     updateComment(commentId: string, content: CreateCommentsDto, user: JwtUser): Promise<void>;
     deleteComment(commentId: string, user: JwtUser): Promise<void>;
-    getCommentById(id: string): Promise<import("../../../../core/types/types").CommentViewModel>;
+    getCommentById(id: string, user: JwtUser): Promise<import("../../../../core/types/types").CommentViewModel>;
 }

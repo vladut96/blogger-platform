@@ -1,6 +1,7 @@
-import mongoose, { Model, SortOrder, Types } from 'mongoose';
+import { Model, SortOrder, Types, Connection } from 'mongoose';
 import { injectable } from 'inversify';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+
 import { PostEntity } from '../../domain/posts.entity';
 import {
   LikeStatus,
@@ -21,9 +22,9 @@ export class PostsRepository {
     @InjectModel(Post.name) private readonly postModel: Model<PostDocument>,
     @InjectModel(PostReaction.name)
     private readonly postReactionModel: Model<PostReactionDocument>,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
   async getById(id: string): Promise<PostEntity | null> {
-    if (!Types.ObjectId.isValid(id)) return null;
     const persisted = await this.postModel
       .findById(id)
       .lean<PostPersistence | null>()
@@ -62,7 +63,7 @@ export class PostsRepository {
     userLogin: string,
     likeStatus: LikeStatus,
   ): Promise<'OK' | 'NOT_FOUND'> {
-    const session = await mongoose.startSession();
+    const session = await this.connection.startSession();
     try {
       let outcome: 'OK' | 'NOT_FOUND' = 'OK';
 

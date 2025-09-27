@@ -11,20 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBlogDto = void 0;
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 class CreateBlogDto {
 }
 exports.CreateBlogDto = CreateBlogDto;
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(1, 15),
     __metadata("design:type", String)
 ], CreateBlogDto.prototype, "name", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.Length)(1, 500),
     __metadata("design:type", String)
 ], CreateBlogDto.prototype, "description", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => value?.trim()),
     (0, class_validator_1.IsUrl)(),
     (0, class_validator_1.Length)(1, 100),
     __metadata("design:type", String)

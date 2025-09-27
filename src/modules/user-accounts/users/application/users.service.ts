@@ -82,6 +82,7 @@ export class UsersService {
   }
   async registerUser(userDTO: CreateUserDto) {
     const userEntity = await UserEntity.register(userDTO);
+    console.log('in user service with email', userEntity.email);
 
     return await this.usersRepository.save(userEntity.toPersistence());
   }

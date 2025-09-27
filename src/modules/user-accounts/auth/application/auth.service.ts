@@ -77,6 +77,10 @@ export class AuthService {
       throw new ValidationException(errors);
     }
     const newUser: UserDocument = await this.usersService.registerUser(dto);
+    console.log(
+      'before send email and after service flow with emailConfiramtion code',
+      newUser.emailConfirmation,
+    );
 
     await nodemailerService.sendEmail(
       dto.email,

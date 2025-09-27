@@ -50,7 +50,7 @@ let AuthController = class AuthController {
         return await this.authService.confirmEmail(dto.code);
     }
     async registerUser(dto) {
-        return await this.authService.registerUser(dto);
+        await this.authService.registerUser(dto);
     }
     async resendConfirmationEmail(dto) {
         return await this.authService.resendConfirmationEmail(dto.email);
@@ -66,6 +66,7 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('login'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Ip)()),
     __param(2, (0, common_1.Headers)('user-agent')),

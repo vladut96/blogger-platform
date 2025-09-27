@@ -1,14 +1,36 @@
 import { IsMongoId, IsString, Length } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateOrUpdatePostDto {
-  @IsString() @Length(1, 30) title!: string;
-  @IsString() @Length(1, 100) shortDescription!: string;
-  @IsString() @Length(1, 1000) content!: string;
-  @IsMongoId() blogId!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 30)
+  title!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 100)
+  shortDescription!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 1000)
+  content!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsMongoId()
+  blogId!: string;
 }
 
 export class CreatePostDtoWithIdParam {
-  @IsString() @Length(1, 30) title!: string;
-  @IsString() @Length(1, 100) shortDescription!: string;
-  @IsString() @Length(1, 1000) content!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 30)
+  title!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 100)
+  shortDescription!: string;
+  @Transform(({ value }: { value: string }) => value?.trim())
+  @IsString()
+  @Length(1, 1000)
+  content!: string;
 }

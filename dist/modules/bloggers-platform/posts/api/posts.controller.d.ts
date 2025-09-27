@@ -12,7 +12,7 @@ export declare class PostsController {
     private readonly commentService;
     constructor(postsService: PostsService, postsQueryService: PostsQueryService, commentService: CommentsService);
     setPostLikeStatus(postId: string, likeStatus: LikeStatusDto, user: JwtUser): Promise<void>;
-    getCommentsForPost(postId: string, query: QueryCommentsDto): Promise<{
+    getCommentsForPost(postId: string, query: QueryCommentsDto, user?: JwtUser): Promise<{
         pagesCount: number;
         page: number;
         pageSize: number;
@@ -46,9 +46,9 @@ export declare class PostsController {
             myStatus: string;
         };
     }>;
-    getPosts(query: PaginationDto): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").PostViewModel>>;
+    getPosts(query: PaginationDto, user?: JwtUser): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").PostViewModel>>;
     createPost(dto: CreateOrUpdatePostDto): Promise<import("../../../../core/types/types").PostViewModel>;
-    getPostById(id: string): Promise<import("../../../../core/types/types").PostViewModel | null>;
+    getPostById(id: string, user?: JwtUser): Promise<import("../../../../core/types/types").PostViewModel | null>;
     updatePost(id: string, dto: CreateOrUpdatePostDto): Promise<void>;
     deletePostById(id: string): Promise<void>;
 }

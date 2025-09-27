@@ -20,8 +20,11 @@ const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
 const comments_service_1 = require("../../comments/application/comments.service");
 const query_comments_dto_1 = require("../../comments/dto/query-comments.dto");
 const create_comments_dto_1 = require("../../comments/dto/create-comments.dto");
+const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const like_status_dto_1 = require("../../comments/dto/like-status.dto");
+const basic_auth_guard_1 = require("../../../../core/guards/basic-auth.guard");
+const optinal_jwt_auth_guard_1 = require("../../../../core/guards/optinal-jwt-auth-guard");
 let PostsController = class PostsController {
     constructor(postsService, postsQueryService, commentService) {
         this.postsService = postsService;
@@ -31,20 +34,24 @@ let PostsController = class PostsController {
     async setPostLikeStatus(postId, likeStatus, user) {
         return this.postsService.setPostLikeStatus(postId, user.userId, user.login, likeStatus.likeStatus);
     }
-    getCommentsForPost(postId, query) {
-        return this.commentService.getCommentsByPostId({ ...query, postId });
+    getCommentsForPost(postId, query, user) {
+        return this.commentService.getCommentsByPostId({
+            ...query,
+            postId,
+            currentUserId: user?.userId,
+        });
     }
     async createPostsComments(postId, content, user) {
         return this.commentService.createComment(postId, content.content, user.userId, user.login);
     }
-    getPosts(query) {
-        return this.postsQueryService.getPosts(query);
+    getPosts(query, user) {
+        return this.postsQueryService.getPosts(query, user?.userId);
     }
     async createPost(dto) {
         return this.postsService.createPost(dto);
     }
-    async getPostById(id) {
-        return this.postsQueryService.getPostById(id);
+    async getPostById(id, user) {
+        return this.postsQueryService.getPostById(id, user?.userId);
     }
     async updatePost(id, dto) {
         return this.postsService.updatePost(id, dto);
@@ -55,6 +62,7 @@ let PostsController = class PostsController {
 };
 exports.PostsController = PostsController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':postId/like-status'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('postId')),
@@ -65,14 +73,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "setPostLikeStatus", null);
 __decorate([
+    (0, common_1.UseGuards)(optinal_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, common_1.Get)(':postId/comments'),
     __param(0, (0, common_1.Param)('postId')),
     __param(1, (0, common_1.Query)()),
+    __param(2, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, query_comments_dto_1.QueryCommentsDto]),
+    __metadata("design:paramtypes", [String, query_comments_dto_1.QueryCommentsDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "getCommentsForPost", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':postId/comments'),
     __param(0, (0, common_1.Param)('postId')),
     __param(1, (0, common_1.Body)('content')),
@@ -82,13 +93,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "createPostsComments", null);
 __decorate([
+    (0, common_1.UseGuards)(optinal_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)()),
+    __param(1, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [pagination_dto_1.PaginationDto]),
+    __metadata("design:paramtypes", [pagination_dto_1.PaginationDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "getPosts", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -96,13 +110,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "createPost", null);
 __decorate([
+    (0, common_1.UseGuards)(optinal_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "getPostById", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Put)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('id')),
@@ -112,6 +129,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostsController.prototype, "updatePost", null);
 __decorate([
+    (0, common_1.UseGuards)(basic_auth_guard_1.BasicAuthGuard),
     (0, common_1.Delete)(':id'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('id')),

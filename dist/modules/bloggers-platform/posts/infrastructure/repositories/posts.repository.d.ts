@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, Connection } from 'mongoose';
 import { PostEntity } from '../../domain/posts.entity';
 import { LikeStatus, PaginationQuery, PostPersistence, NewestLike } from '../../../../../core/types/types';
 import { PostDocument } from '../schemas/posts.schema';
@@ -7,7 +7,8 @@ import { PaginationDto } from '../../../../../core/dto/pagination.dto';
 export declare class PostsRepository {
     private readonly postModel;
     private readonly postReactionModel;
-    constructor(postModel: Model<PostDocument>, postReactionModel: Model<PostReactionDocument>);
+    private readonly connection;
+    constructor(postModel: Model<PostDocument>, postReactionModel: Model<PostReactionDocument>, connection: Connection);
     getById(id: string): Promise<PostEntity | null>;
     save(entity: PostEntity): Promise<PostEntity>;
     deletePostById(id: string): Promise<boolean>;

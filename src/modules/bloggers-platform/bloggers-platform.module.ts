@@ -32,6 +32,7 @@ import {
 import { CommentsController } from './comments/api/comments.controller';
 import { CommentsService } from './comments/application/comments.service';
 import { CommentsRepository } from './comments/infrastructure/repositories/comments.repository';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [

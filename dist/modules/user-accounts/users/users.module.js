@@ -13,19 +13,16 @@ const users_controller_1 = require("./api/users.controller");
 const users_service_1 = require("./application/users.service");
 const user_schema_1 = require("./infrastructure/schemas/user.schema");
 const users_repository_1 = require("./infrastructure/repositories/users.repository");
-const passport_1 = require("@nestjs/passport");
-const basic_strategy_1 = require("../../../core/guards/basic.strategy");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            passport_1.PassportModule,
             mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
         ],
         controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService, users_repository_1.UsersRepository, basic_strategy_1.BasicStrategy],
+        providers: [users_service_1.UsersService, users_repository_1.UsersRepository],
         exports: [users_service_1.UsersService],
     })
 ], UsersModule);

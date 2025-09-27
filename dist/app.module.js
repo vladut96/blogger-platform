@@ -16,6 +16,7 @@ const testing_module_1 = require("./modules/delete-all-testing/testing.module");
 const auth_module_1 = require("./modules/user-accounts/auth/auth.module");
 const throttler_1 = require("@nestjs/throttler");
 const core_1 = require("@nestjs/core");
+const guards_module_1 = require("./core/guards/guards.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -23,7 +24,9 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL),
+            mongoose_1.MongooseModule.forRoot(process.env.MONGO_URL, {
+                dbName: 'my-database',
+            }),
             throttler_1.ThrottlerModule.forRoot({
                 throttlers: [
                     {
@@ -32,6 +35,7 @@ exports.AppModule = AppModule = __decorate([
                     },
                 ],
             }),
+            guards_module_1.GuardsModule,
             users_module_1.UsersModule,
             bloggers_platform_module_1.BloggersPlatformModule,
             auth_module_1.AuthModule,

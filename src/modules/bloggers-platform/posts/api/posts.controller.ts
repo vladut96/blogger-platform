@@ -21,6 +21,8 @@ import { JwtAuthGuard } from '../../../../core/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
 import { JwtUser } from '../../../../core/types/types';
 import { LikeStatusDto } from '../../comments/dto/like-status.dto';
+import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
+import { OptionalJwtAuthGuard } from '../../../../core/guards/optinal-jwt-auth-guard';
 
 @Controller('posts')
 export class PostsController {
@@ -29,7 +31,7 @@ export class PostsController {
     private readonly postsQueryService: PostsQueryService,
     private readonly commentService: CommentsService,
   ) {}
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':postId/like-status')
   @HttpCode(HttpStatus.NO_CONTENT)
   async setPostLikeStatus(
@@ -44,14 +46,20 @@ export class PostsController {
       likeStatus.likeStatus,
     );
   }
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':postId/comments')
   getCommentsForPost(
     @Param('postId') postId: string,
     @Query() query: QueryCommentsDto,
+    @CurrentUser() user?: JwtUser,
   ) {
-    return this.commentService.getCommentsByPostId({ ...query, postId });
+    return this.commentService.getCommentsByPostId({
+      ...query,
+      postId,
+      currentUserId: user?.userId,
+    });
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post(':postId/comments')
   async createPostsComments(
     @Param('postId') postId: string,
@@ -65,20 +73,22 @@ export class PostsController {
       user.login,
     );
   }
+  @UseGuards(OptionalJwtAuthGuard)
   @Get()
-  getPosts(@Query() query: PaginationDto) {
-    return this.postsQueryService.getPosts(query);
+  getPosts(@Query() query: PaginationDto, @CurrentUser() user?: JwtUser) {
+    return this.postsQueryService.getPosts(query, user?.userId);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Post()
   async createPost(@Body() dto: CreateOrUpdatePostDto) {
     return this.postsService.createPost(dto);
   }
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
-  async getPostById(@Param('id') id: string) {
-    return this.postsQueryService.getPostById(id);
+  async getPostById(@Param('id') id: string, @CurrentUser() user?: JwtUser) {
+    return this.postsQueryService.getPostById(id, user?.userId);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Put(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updatePost(
@@ -87,7 +97,7 @@ export class PostsController {
   ) {
     return this.postsService.updatePost(id, dto);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deletePostById(@Param('id') id: string) {

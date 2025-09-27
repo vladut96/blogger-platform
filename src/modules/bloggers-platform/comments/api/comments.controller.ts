@@ -16,11 +16,12 @@ import { JwtUser } from '../../../../core/types/types';
 import { LikeStatusDto } from '../dto/like-status.dto';
 import { CreateCommentsDto } from '../dto/create-comments.dto';
 import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
+import { OptionalJwtAuthGuard } from '../../../../core/guards/optinal-jwt-auth-guard';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentService: CommentsService) {}
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':commentId/like-status')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateLikeStatus(
@@ -34,7 +35,7 @@ export class CommentsController {
       likeStatus.likeStatus,
     );
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put('comments/:commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateComment(
@@ -48,7 +49,7 @@ export class CommentsController {
       user.userId,
     );
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteComment(
@@ -57,8 +58,9 @@ export class CommentsController {
   ) {
     return this.commentService.deleteComment(commentId, user.userId);
   }
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
-  async getCommentById(@Param('id') id: string) {
-    return this.commentService.getCommentById(id);
+  async getCommentById(@Param('id') id: string, @CurrentUser() user: JwtUser) {
+    return this.commentService.getCommentById(id, user?.userId);
   }
 }

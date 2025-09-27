@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QueryBlogsWithIdDto = exports.QueryBlogsDto = void 0;
+exports.QueryBlogsDto = void 0;
 const class_validator_1 = require("class-validator");
 const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
 class QueryBlogsDto extends pagination_dto_1.PaginationDto {
@@ -24,11 +24,4 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", Object)
 ], QueryBlogsDto.prototype, "searchNameTerm", void 0);
-class QueryBlogsWithIdDto extends pagination_dto_1.PaginationDto {
-}
-exports.QueryBlogsWithIdDto = QueryBlogsWithIdDto;
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], QueryBlogsWithIdDto.prototype, "blogId", void 0);
 //# sourceMappingURL=query-blogs.dto.js.map

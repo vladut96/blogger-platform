@@ -7,11 +7,14 @@ import { TestingModule } from './modules/delete-all-testing/testing.module';
 import { AuthModule } from './modules/user-accounts/auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { GuardsModule } from './core/guards/guards.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URL!),
+    MongooseModule.forRoot(process.env.MONGO_URL!, {
+      dbName: 'my-database',
+    }),
     ThrottlerModule.forRoot({
       throttlers: [
         {
@@ -20,6 +23,7 @@ import { APP_GUARD } from '@nestjs/core';
         },
       ],
     }),
+    GuardsModule,
     UsersModule,
     BloggersPlatformModule,
     AuthModule,

@@ -19,7 +19,7 @@ import {
   PostsService,
 } from '../../posts/application/posts.service';
 import { CreatePostDtoWithIdParam } from '../../posts/dto/create-or-update-post.dto';
-import { JwtAuthGuard } from '../../../../core/guards/jwt-auth.guard';
+import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
 
 @Controller('blogs')
 export class BlogsController {
@@ -34,7 +34,7 @@ export class BlogsController {
   async getBlogs(@Query() query: QueryBlogsDto) {
     return await this.blogsQueryService.getBlogs(query);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Post()
   async createBlog(@Body() dto: CreateBlogDto) {
     return await this.blogsService.createBlog(dto);
@@ -46,7 +46,7 @@ export class BlogsController {
   ) {
     return this.postsQueryService.getPostsByBlogId(blogId, query);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Post(':blogId/posts')
   async createPost(
     @Param('blogId') blogId: string,
@@ -59,13 +59,13 @@ export class BlogsController {
   async getBlogById(@Param('id') id: string) {
     return await this.blogsQueryService.getBlogById(id);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Put(':id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() dto: CreateBlogDto) {
     return this.blogsService.updateBlog(id, dto);
   }
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {

@@ -1,5 +1,7 @@
 import { IsString, Length } from 'class-validator';
 
 export class CreateCommentsDto {
-  @IsString() @Length(20, 300) content!: string;
+  @IsString()
+  @Length(20, 300)
+  content!: string;
 }

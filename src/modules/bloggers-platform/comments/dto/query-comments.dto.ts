@@ -4,8 +4,3 @@ import { PaginationDto } from '../../../../core/dto/pagination.dto';
 export class QueryCommentsDto extends PaginationDto {
   @IsOptional() @IsString() searchNameTerm: string | null = null;
 }
-
-export class QueryBlogsWithIdDto extends PaginationDto {
-  @IsString()
-  blogId!: string;
-}
