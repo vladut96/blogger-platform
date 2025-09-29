@@ -43,6 +43,11 @@ let UsersRepository = class UsersRepository {
             .limit(pageSize);
         return { users, totalCount };
     }
+    async getUserById(userId) {
+        return this.userModel
+            .findById(userId, { _id: 1, login: 1, email: 1 })
+            .lean();
+    }
     async getUserByLoginOrEmail(loginOrEmail) {
         return this.userModel
             .findOne({

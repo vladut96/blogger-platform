@@ -4,7 +4,7 @@ import { CreateUserDto } from '../../users/dto/create-user.dto';
 import { EmailDto } from '../../../../core/dto/email.dto';
 import { NewPasswordDto } from '../dto/new-password.dto';
 import { LoginDto } from '../dto/login.dto';
-import { JwtUser } from '../../../../core/types/types';
+import { JwtRefreshTokenUser, JwtUser } from '../../../../core/types/types';
 import { CodeDto } from '../dto/confirmation-code.dto';
 export declare class AuthController {
     private readonly authService;
@@ -14,6 +14,10 @@ export declare class AuthController {
     }>;
     requestPasswordRecovery(dto: EmailDto): Promise<void>;
     setNewPassword(dto: NewPasswordDto): Promise<boolean>;
+    getRefreshTokenPair(user: JwtRefreshTokenUser): Promise<{
+        accessToken: string;
+        refreshToken: string;
+    }>;
     confirmEmail(dto: CodeDto): Promise<void>;
     registerUser(dto: CreateUserDto): Promise<void>;
     resendConfirmationEmail(dto: EmailDto): Promise<void>;

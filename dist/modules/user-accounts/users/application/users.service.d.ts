@@ -7,6 +7,13 @@ export declare class UsersService {
     private readonly usersRepository;
     constructor(usersRepository: UsersRepository);
     getUsers(query: QueryUsersDto): Promise<Paginator<UserViewModel>>;
+    getUserById(userId: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, import("../infrastructure/schemas/user.schema").User, {}, {}> & import("../infrastructure/schemas/user.schema").User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }> & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>) | null>;
     getUserByLoginOrEmail(loginOrEmail: string): Promise<null | UserDocument>;
     getUserByLogin(login: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, import("../infrastructure/schemas/user.schema").User, {}, {}> & import("../infrastructure/schemas/user.schema").User & {
         _id: import("mongoose").Types.ObjectId;

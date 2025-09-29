@@ -23,6 +23,7 @@ const login_dto_1 = require("../dto/login.dto");
 const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const confirmation_code_dto_1 = require("../dto/confirmation-code.dto");
+const jwt_refresh_guard_1 = require("../../../../core/guards/jwt-refresh.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -45,6 +46,9 @@ let AuthController = class AuthController {
     }
     async setNewPassword(dto) {
         return await this.authService.confirmPasswordRecovery(dto);
+    }
+    async getRefreshTokenPair(user) {
+        return this.authService.getRefreshTokenPair(user.userId, user.deviceId);
     }
     async confirmEmail(dto) {
         return await this.authService.confirmEmail(dto.code);
@@ -90,6 +94,14 @@ __decorate([
     __metadata("design:paramtypes", [new_password_dto_1.NewPasswordDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "setNewPassword", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_refresh_guard_1.JwtRefreshGuard),
+    (0, common_1.Post)('refresh-token'),
+    __param(0, (0, currentUser_JWT_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getRefreshTokenPair", null);
 __decorate([
     (0, common_1.Post)('registration-confirmation'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),

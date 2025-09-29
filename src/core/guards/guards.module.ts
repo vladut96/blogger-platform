@@ -6,6 +6,8 @@ import { BasicStrategy } from './basic.strategy';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { BasicAuthGuard } from './basic-auth.guard';
 import { OptionalJwtAuthGuard } from './optinal-jwt-auth-guard';
+import { JwtRefreshGuard } from './jwt-refresh.guard';
+import { JwtRefreshStrategy } from './jwt-refresh.strategy';
 
 @Global()
 @Module({
@@ -21,7 +23,16 @@ import { OptionalJwtAuthGuard } from './optinal-jwt-auth-guard';
     JwtAuthGuard,
     OptionalJwtAuthGuard,
     BasicAuthGuard,
+    JwtRefreshGuard,
+    JwtRefreshStrategy,
   ],
-  exports: [JwtAuthGuard, OptionalJwtAuthGuard, BasicAuthGuard, JwtModule],
+  exports: [
+    JwtAuthGuard,
+    OptionalJwtAuthGuard,
+    BasicAuthGuard,
+    JwtModule,
+    JwtRefreshGuard,
+    JwtRefreshStrategy,
+  ],
 })
 export class GuardsModule {}

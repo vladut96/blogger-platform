@@ -51,7 +51,11 @@ export class UsersRepository {
 
     return { users, totalCount };
   }
-
+  async getUserById(userId: string) {
+    return this.userModel
+      .findById(userId, { _id: 1, login: 1, email: 1 })
+      .lean();
+  }
   async getUserByLoginOrEmail(loginOrEmail: string) {
     return this.userModel
       .findOne({

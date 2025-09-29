@@ -30,8 +30,8 @@ exports.AppModule = AppModule = __decorate([
             throttler_1.ThrottlerModule.forRoot({
                 throttlers: [
                     {
-                        ttl: 30_000,
-                        limit: 500,
+                        ttl: 10_000,
+                        limit: 5,
                     },
                 ],
             }),

@@ -18,8 +18,8 @@ import { GuardsModule } from './core/guards/guards.module';
     ThrottlerModule.forRoot({
       throttlers: [
         {
-          ttl: 30_000,
-          limit: 500,
+          ttl: 10_000,
+          limit: 5,
         },
       ],
     }),

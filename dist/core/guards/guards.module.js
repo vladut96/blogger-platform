@@ -15,6 +15,8 @@ const basic_strategy_1 = require("./basic.strategy");
 const jwt_auth_guard_1 = require("./jwt-auth.guard");
 const basic_auth_guard_1 = require("./basic-auth.guard");
 const optinal_jwt_auth_guard_1 = require("./optinal-jwt-auth-guard");
+const jwt_refresh_guard_1 = require("./jwt-refresh.guard");
+const jwt_refresh_strategy_1 = require("./jwt-refresh.strategy");
 let GuardsModule = class GuardsModule {
 };
 exports.GuardsModule = GuardsModule;
@@ -33,8 +35,17 @@ exports.GuardsModule = GuardsModule = __decorate([
             jwt_auth_guard_1.JwtAuthGuard,
             optinal_jwt_auth_guard_1.OptionalJwtAuthGuard,
             basic_auth_guard_1.BasicAuthGuard,
+            jwt_refresh_guard_1.JwtRefreshGuard,
+            jwt_refresh_strategy_1.JwtRefreshStrategy,
         ],
-        exports: [jwt_auth_guard_1.JwtAuthGuard, optinal_jwt_auth_guard_1.OptionalJwtAuthGuard, basic_auth_guard_1.BasicAuthGuard, jwt_1.JwtModule],
+        exports: [
+            jwt_auth_guard_1.JwtAuthGuard,
+            optinal_jwt_auth_guard_1.OptionalJwtAuthGuard,
+            basic_auth_guard_1.BasicAuthGuard,
+            jwt_1.JwtModule,
+            jwt_refresh_guard_1.JwtRefreshGuard,
+            jwt_refresh_strategy_1.JwtRefreshStrategy,
+        ],
     })
 ], GuardsModule);
 //# sourceMappingURL=guards.module.js.map

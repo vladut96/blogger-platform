@@ -24,6 +24,9 @@ let UsersService = class UsersService {
         const items = users.map((user) => user_entity_1.UserEntity.fromPersistence(user).toViewModel());
         return (0, buildPaginator_1.buildPaginator)(query, totalCount, items);
     }
+    async getUserById(userId) {
+        return this.usersRepository.getUserById(userId);
+    }
     async getUserByLoginOrEmail(loginOrEmail) {
         return await this.usersRepository.getUserByLoginOrEmail(loginOrEmail);
     }

@@ -5,8 +5,8 @@ export const generateTokens = (
   user: { _id: ObjectId; email: string; login: string },
   deviceId: string,
 ) => {
-  const accessTokenExpiresIn = '300s';
-  const refreshTokenExpiresIn = '1440s';
+  const accessTokenExpiresIn = '10s';
+  const refreshTokenExpiresIn = '30s';
 
   const accessToken = jwt.sign(
     {

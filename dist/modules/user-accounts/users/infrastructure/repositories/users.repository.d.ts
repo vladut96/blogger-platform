@@ -9,6 +9,13 @@ export declare class UsersRepository {
         users: HydratedDocument<User>[];
         totalCount: number;
     }>;
+    getUserById(userId: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
+        _id: import("mongoose").Types.ObjectId;
+    } & {
+        __v: number;
+    }> & Required<{
+        _id: import("mongoose").Types.ObjectId;
+    }>) | null>;
     getUserByLoginOrEmail(loginOrEmail: string): Promise<(import("mongoose").FlattenMaps<import("mongoose").Document<unknown, {}, User, {}, {}> & User & {
         _id: import("mongoose").Types.ObjectId;
     } & {

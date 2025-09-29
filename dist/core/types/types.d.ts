@@ -165,6 +165,10 @@ export interface JwtUser {
     login: string;
     email: string;
 }
+export interface JwtRefreshTokenUser {
+    userId: string;
+    deviceId: string;
+}
 export interface DeviceAuthSession {
     userId: string;
     deviceId: string;

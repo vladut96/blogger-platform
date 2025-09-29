@@ -11,9 +11,11 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const auth_controller_1 = require("./api/auth.controller");
 const auth_service_1 = require("./application/auth.service");
-const auth_repository_1 = require("./infrastracture/repositories/auth.repository");
 const auth_schema_1 = require("./infrastracture/schemas/auth.schema");
 const users_module_1 = require("../users/users.module");
+const security_devices_repository_1 = require("./infrastracture/repositories/security-devices.repository");
+const security_devices_service_1 = require("./application/security-devices.service");
+const security_devices_controller_1 = require("./api/security-devices.controller");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -25,8 +27,8 @@ exports.AuthModule = AuthModule = __decorate([
             ]),
             users_module_1.UsersModule,
         ],
-        controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, auth_repository_1.AuthRepository],
+        controllers: [auth_controller_1.AuthController, security_devices_controller_1.SecurityDevicesController],
+        providers: [auth_service_1.AuthService, security_devices_service_1.SecurityDevicesService, security_devices_repository_1.SecurityDevicesRepository],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

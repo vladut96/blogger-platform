@@ -24,11 +24,26 @@ const passwordUtils_1 = require("../../users/infrastructure/passwordUtils");
 const common_1 = require("@nestjs/common");
 const generateTokens_1 = require("../../../../core/utils/generateTokens");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const auth_repository_1 = require("../infrastracture/repositories/auth.repository");
+const security_devices_service_1 = require("./security-devices.service");
 let AuthService = class AuthService {
-    constructor(usersService, authRepository) {
+    constructor(usersService, securityDevicesService) {
         this.usersService = usersService;
-        this.authRepository = authRepository;
+        this.securityDevicesService = securityDevicesService;
+    }
+    async getRefreshTokenPair(userId, deviceId) {
+        const user = await this.usersService.getUserById(userId);
+        if (!user)
+            throw new common_1.UnauthorizedException();
+        const { accessToken, refreshToken } = (0, generateTokens_1.generateTokens)(user, deviceId);
+        const decoded = jsonwebtoken_1.default.decode(refreshToken);
+        if (decoded?.iat !== undefined && decoded?.exp !== undefined) {
+            await this.securityDevicesService.updateDeviceSession({
+                deviceId,
+                lastActiveDate: new Date(decoded.iat * 1000).toISOString(),
+                exp: new Date(decoded.exp * 1000).toISOString(),
+            });
+        }
+        return { accessToken, refreshToken };
     }
     async authenticateUser(loginOrEmail, password, deviceName, ip) {
         const user = await this.usersService.getUserByLoginOrEmail(loginOrEmail);
@@ -38,7 +53,7 @@ let AuthService = class AuthService {
         const deviceId = (0, crypto_1.randomUUID)();
         const { accessToken, refreshToken } = (0, generateTokens_1.generateTokens)(user, deviceId);
         const refreshDecode = jsonwebtoken_1.default.decode(refreshToken);
-        await this.authRepository.createDeviceSession({
+        await this.securityDevicesService.createDeviceSession({
             userId: user._id.toString(),
             deviceId,
             lastActiveDate: new Date(refreshDecode.iat * 1000).toISOString(),
@@ -62,7 +77,6 @@ let AuthService = class AuthService {
             throw new custom_validation_exception_1.ValidationException(errors);
         }
         const newUser = await this.usersService.registerUser(dto);
-        console.log('before send email and after service flow with emailConfiramtion code', newUser.emailConfirmation);
         await nodemailerService_1.nodemailerService.sendEmail(dto.email, newUser.emailConfirmation.confirmationCode, nodemailerService_1.nodemailerService.emailTemplates.registrationEmail);
     }
     async confirmEmail(code) {
@@ -115,6 +129,6 @@ exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, inversify_1.injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
-        auth_repository_1.AuthRepository])
+        security_devices_service_1.SecurityDevicesService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -19,8 +19,9 @@ import { NewPasswordDto } from '../dto/new-password.dto';
 import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from '../../../../core/guards/jwt-auth.guard';
 import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
-import { JwtUser } from '../../../../core/types/types';
+import { JwtRefreshTokenUser, JwtUser } from '../../../../core/types/types';
 import { CodeDto } from '../dto/confirmation-code.dto';
+import { JwtRefreshGuard } from '../../../../core/guards/jwt-refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -63,6 +64,13 @@ export class AuthController {
   async setNewPassword(@Body() dto: NewPasswordDto) {
     return await this.authService.confirmPasswordRecovery(dto);
   }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh-token')
+  async getRefreshTokenPair(@CurrentUser() user: JwtRefreshTokenUser) {
+    return this.authService.getRefreshTokenPair(user.userId, user.deviceId);
+  }
+
   @Post('registration-confirmation')
   @HttpCode(HttpStatus.NO_CONTENT)
   async confirmEmail(@Body() dto: CodeDto) {

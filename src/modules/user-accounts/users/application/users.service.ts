@@ -28,6 +28,9 @@ export class UsersService {
 
     return buildPaginator(query, totalCount, items);
   }
+  async getUserById(userId: string) {
+    return this.usersRepository.getUserById(userId);
+  }
   async getUserByLoginOrEmail(
     loginOrEmail: string,
   ): Promise<null | UserDocument> {

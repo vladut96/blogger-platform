@@ -15,14 +15,31 @@ import { NewPasswordDto } from '../dto/new-password.dto';
 import { UnauthorizedException } from '@nestjs/common';
 import { generateTokens } from '../../../../core/utils/generateTokens';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { AuthRepository } from '../infrastracture/repositories/auth.repository';
+import { SecurityDevicesService } from './security-devices.service';
 
 @injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly authRepository: AuthRepository,
+    private readonly securityDevicesService: SecurityDevicesService,
   ) {}
+  async getRefreshTokenPair(userId: string, deviceId: string) {
+    const user = await this.usersService.getUserById(userId);
+    if (!user) throw new UnauthorizedException();
+
+    const { accessToken, refreshToken } = generateTokens(user, deviceId);
+    const decoded = jwt.decode(refreshToken) as JwtPayload;
+
+    if (decoded?.iat !== undefined && decoded?.exp !== undefined) {
+      await this.securityDevicesService.updateDeviceSession({
+        deviceId,
+        lastActiveDate: new Date(decoded.iat * 1000).toISOString(),
+        exp: new Date(decoded.exp * 1000).toISOString(),
+      });
+    }
+
+    return { accessToken, refreshToken };
+  }
   async authenticateUser(
     loginOrEmail: string,
     password: string,
@@ -40,7 +57,7 @@ export class AuthService {
     const { accessToken, refreshToken } = generateTokens(user, deviceId);
     const refreshDecode = jwt.decode(refreshToken) as JwtPayload;
 
-    await this.authRepository.createDeviceSession({
+    await this.securityDevicesService.createDeviceSession({
       userId: user._id.toString(),
       deviceId,
       lastActiveDate: new Date(refreshDecode.iat! * 1000).toISOString(),
@@ -77,10 +94,6 @@ export class AuthService {
       throw new ValidationException(errors);
     }
     const newUser: UserDocument = await this.usersService.registerUser(dto);
-    console.log(
-      'before send email and after service flow with emailConfiramtion code',
-      newUser.emailConfirmation,
-    );
 
     await nodemailerService.sendEmail(
       dto.email,
