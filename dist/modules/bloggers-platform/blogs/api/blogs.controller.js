@@ -21,6 +21,8 @@ const pagination_dto_1 = require("../../../../core/dto/pagination.dto");
 const posts_service_1 = require("../../posts/application/posts.service");
 const create_or_update_post_dto_1 = require("../../posts/dto/create-or-update-post.dto");
 const basic_auth_guard_1 = require("../../../../core/guards/basic-auth.guard");
+const optinal_jwt_auth_guard_1 = require("../../../../core/guards/optinal-jwt-auth-guard");
+const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 let BlogsController = class BlogsController {
     constructor(blogsService, blogsQueryService, postsQueryService, postsService) {
         this.blogsService = blogsService;
@@ -34,8 +36,8 @@ let BlogsController = class BlogsController {
     async createBlog(dto) {
         return await this.blogsService.createBlog(dto);
     }
-    async getPostsByBlogId(blogId, query) {
-        return this.postsQueryService.getPostsByBlogId(blogId, query);
+    async getPostsByBlogId(blogId, query, user) {
+        return this.postsQueryService.getPostsByBlogId(blogId, query, user?.userId);
     }
     async createPost(blogId, dto) {
         return await this.postsService.createPost({ ...dto, blogId });
@@ -67,11 +69,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "createBlog", null);
 __decorate([
+    (0, common_1.UseGuards)(optinal_jwt_auth_guard_1.OptionalJwtAuthGuard),
     (0, common_1.Get)(':blogId/posts'),
     __param(0, (0, common_1.Param)('blogId')),
     __param(1, (0, common_1.Query)()),
+    __param(2, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, pagination_dto_1.PaginationDto]),
+    __metadata("design:paramtypes", [String, pagination_dto_1.PaginationDto, Object]),
     __metadata("design:returntype", Promise)
 ], BlogsController.prototype, "getPostsByBlogId", null);
 __decorate([

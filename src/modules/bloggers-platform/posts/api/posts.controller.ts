@@ -63,12 +63,12 @@ export class PostsController {
   @Post(':postId/comments')
   async createPostsComments(
     @Param('postId') postId: string,
-    @Body('content') content: CreateCommentsDto,
+    @Body() dto: CreateCommentsDto,
     @CurrentUser() user: JwtUser,
   ) {
     return this.commentService.createComment(
       postId,
-      content.content,
+      dto.content,
       user.userId,
       user.login,
     );

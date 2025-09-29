@@ -84,6 +84,8 @@ export class CommentsRepository {
       .limit(pageSize)
       .lean();
 
+    if (comments.length === 0) return null;
+
     return {
       pagesCount: Math.ceil(totalCount / pageSize),
       page: pageNumber,

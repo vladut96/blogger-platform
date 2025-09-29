@@ -39,7 +39,7 @@ __decorate([
     __metadata("design:type", String)
 ], DeviceSession.prototype, "exp", void 0);
 exports.DeviceSession = DeviceSession = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'Device-Session' })
+    (0, mongoose_1.Schema)({ collection: 'device-Session' })
 ], DeviceSession);
 exports.DeviceSessionSchema = mongoose_1.SchemaFactory.createForClass(DeviceSession);
 //# sourceMappingURL=auth.schema.js.map

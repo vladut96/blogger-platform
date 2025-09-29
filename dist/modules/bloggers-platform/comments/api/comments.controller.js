@@ -52,7 +52,7 @@ __decorate([
 ], CommentsController.prototype, "updateLikeStatus", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Put)('comments/:commentId'),
+    (0, common_1.Put)('/:commentId'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, common_1.Param)('commentId', parse_mongo_id_pipe_1.ParseMongoIdPipe)),
     __param(1, (0, common_1.Body)()),

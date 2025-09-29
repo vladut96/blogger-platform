@@ -32,7 +32,7 @@ export declare class PostsController {
             };
         }[];
     }>;
-    createPostsComments(postId: string, content: CreateCommentsDto, user: JwtUser): Promise<{
+    createPostsComments(postId: string, dto: CreateCommentsDto, user: JwtUser): Promise<{
         id: string;
         content: string;
         commentatorInfo: {

@@ -129,8 +129,6 @@ let PostsQueryRepository = class PostsQueryRepository {
         this.postReactionModel = postReactionModel;
     }
     async getPostById(id) {
-        if (!mongoose_1.Types.ObjectId.isValid(id))
-            return null;
         return this.postModel.findById(id).lean().exec();
     }
     async getPosts(params) {

@@ -20,6 +20,10 @@ import {
 } from '../../posts/application/posts.service';
 import { CreatePostDtoWithIdParam } from '../../posts/dto/create-or-update-post.dto';
 import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
+import { OptionalJwtAuthGuard } from '../../../../core/guards/optinal-jwt-auth-guard';
+import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
+import { JwtUser } from '../../../../core/types/types';
+import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
 
 @Controller('blogs')
 export class BlogsController {
@@ -39,12 +43,14 @@ export class BlogsController {
   async createBlog(@Body() dto: CreateBlogDto) {
     return await this.blogsService.createBlog(dto);
   }
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':blogId/posts')
   async getPostsByBlogId(
     @Param('blogId') blogId: string,
     @Query() query: PaginationDto,
+    @CurrentUser() user?: JwtUser,
   ) {
-    return this.postsQueryService.getPostsByBlogId(blogId, query);
+    return this.postsQueryService.getPostsByBlogId(blogId, query, user?.userId);
   }
   @UseGuards(BasicAuthGuard)
   @Post(':blogId/posts')

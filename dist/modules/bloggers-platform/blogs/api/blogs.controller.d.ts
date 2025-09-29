@@ -4,6 +4,7 @@ import { CreateBlogDto } from '../dto/create-blog.dto';
 import { PaginationDto } from '../../../../core/dto/pagination.dto';
 import { PostsQueryService, PostsService } from '../../posts/application/posts.service';
 import { CreatePostDtoWithIdParam } from '../../posts/dto/create-or-update-post.dto';
+import { JwtUser } from '../../../../core/types/types';
 export declare class BlogsController {
     private readonly blogsService;
     private readonly blogsQueryService;
@@ -12,7 +13,7 @@ export declare class BlogsController {
     constructor(blogsService: BlogsService, blogsQueryService: BlogsQueryService, postsQueryService: PostsQueryService, postsService: PostsService);
     getBlogs(query: QueryBlogsDto): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").BlogViewModel>>;
     createBlog(dto: CreateBlogDto): Promise<import("../../../../core/types/types").BlogViewModel>;
-    getPostsByBlogId(blogId: string, query: PaginationDto): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").PostViewModel>>;
+    getPostsByBlogId(blogId: string, query: PaginationDto, user?: JwtUser): Promise<import("../../../../core/types/types").Paginator<import("../../../../core/types/types").PostViewModel>>;
     createPost(blogId: string, dto: CreatePostDtoWithIdParam): Promise<import("../../../../core/types/types").PostViewModel>;
     getBlogById(id: string): Promise<import("../domain/blogs.entity").BlogsEntity>;
     updateBlog(id: string, dto: CreateBlogDto): Promise<void>;

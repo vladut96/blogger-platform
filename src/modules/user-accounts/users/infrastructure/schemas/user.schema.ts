@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-@Schema({ collection: 'Users' })
+@Schema({ collection: 'users' })
 export class User {
   @Prop({ type: String, unique: true, index: true })
   login!: string;

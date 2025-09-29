@@ -36,7 +36,7 @@ export class CommentsController {
     );
   }
   @UseGuards(JwtAuthGuard)
-  @Put('comments/:commentId')
+  @Put('/:commentId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async updateComment(
     @Param('commentId', ParseMongoIdPipe) commentId: string,

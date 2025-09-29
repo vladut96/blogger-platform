@@ -1,8 +1,10 @@
 import { LikeStatus, CommentViewModel } from '../../../../core/types/types';
 import { CommentsRepository } from '../infrastructure/repositories/comments.repository';
+import { PostsQueryRepository } from '../../posts/infrastructure/repositories/posts.repository';
 export declare class CommentsService {
     private readonly commentsRepository;
-    constructor(commentsRepository: CommentsRepository);
+    private readonly postsQueryRepository;
+    constructor(commentsRepository: CommentsRepository, postsQueryRepository: PostsQueryRepository);
     getCommentById(commentId: string, currentUserId?: string): Promise<CommentViewModel>;
     updateComment(commentId: string, content: string, userId: string): Promise<void>;
     deleteComment(commentId: string, userId: string): Promise<void>;

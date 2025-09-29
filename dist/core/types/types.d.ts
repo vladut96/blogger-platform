@@ -156,10 +156,9 @@ export interface CommentatorInfo {
     userLogin: string;
 }
 export interface MeViewModel {
-    email?: string;
+    email: string;
     login: string;
     userId: string;
-    deviceId?: string;
 }
 export interface JwtUser {
     userId: string;

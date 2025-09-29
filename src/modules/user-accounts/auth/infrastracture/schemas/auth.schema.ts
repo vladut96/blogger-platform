@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-@Schema({ collection: 'Device-Session' })
+@Schema({ collection: 'device-Session' })
 export class DeviceSession {
   @Prop({ type: String, required: true }) userId!: string;
   @Prop({ type: String, required: true }) deviceId!: string;

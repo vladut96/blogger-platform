@@ -34,7 +34,7 @@ export declare class CommentsRepository {
                 myStatus: "Like" | "Dislike" | "None";
             };
         }[];
-    }>;
+    } | null>;
     createComment(postId: string, content: string, userId: string, userLogin: string): Promise<{
         id: string;
         content: string;

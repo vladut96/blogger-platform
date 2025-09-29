@@ -2,10 +2,14 @@ import { injectable } from 'inversify';
 import { LikeStatus, CommentViewModel } from '../../../../core/types/types';
 import { CommentsRepository } from '../infrastructure/repositories/comments.repository';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { PostsQueryRepository } from '../../posts/infrastructure/repositories/posts.repository';
 
 @injectable()
 export class CommentsService {
-  constructor(private readonly commentsRepository: CommentsRepository) {}
+  constructor(
+    private readonly commentsRepository: CommentsRepository,
+    private readonly postsQueryRepository: PostsQueryRepository,
+  ) {}
   async getCommentById(
     commentId: string,
     currentUserId?: string,
@@ -57,7 +61,7 @@ export class CommentsService {
     sortDirection: 1 | -1;
     currentUserId?: string;
   }) {
-    return await this.commentsRepository.getCommentsByPostId({
+    const comments = await this.commentsRepository.getCommentsByPostId({
       postId,
       pageNumber,
       pageSize,
@@ -65,6 +69,8 @@ export class CommentsService {
       sortDirection,
       currentUserId,
     });
+    if (!comments) throw new NotFoundException();
+    return comments;
   }
   async createComment(
     postId: string,
@@ -72,6 +78,9 @@ export class CommentsService {
     userId: string,
     userLogin: string,
   ) {
+    const postExists = await this.postsQueryRepository.getPostById(postId);
+    if (!postExists) throw new NotFoundException();
+
     return await this.commentsRepository.createComment(
       postId,
       content,

@@ -13,9 +13,11 @@ exports.CommentsService = void 0;
 const inversify_1 = require("inversify");
 const comments_repository_1 = require("../infrastructure/repositories/comments.repository");
 const common_1 = require("@nestjs/common");
+const posts_repository_1 = require("../../posts/infrastructure/repositories/posts.repository");
 let CommentsService = class CommentsService {
-    constructor(commentsRepository) {
+    constructor(commentsRepository, postsQueryRepository) {
         this.commentsRepository = commentsRepository;
+        this.postsQueryRepository = postsQueryRepository;
     }
     async getCommentById(commentId, currentUserId) {
         const comment = await this.commentsRepository.getCommentById(commentId, currentUserId);
@@ -42,7 +44,7 @@ let CommentsService = class CommentsService {
         await this.commentsRepository.deleteComment(commentId);
     }
     async getCommentsByPostId({ postId, pageNumber, pageSize, sortBy, sortDirection, currentUserId, }) {
-        return await this.commentsRepository.getCommentsByPostId({
+        const comments = await this.commentsRepository.getCommentsByPostId({
             postId,
             pageNumber,
             pageSize,
@@ -50,8 +52,14 @@ let CommentsService = class CommentsService {
             sortDirection,
             currentUserId,
         });
+        if (!comments)
+            throw new common_1.NotFoundException();
+        return comments;
     }
     async createComment(postId, content, userId, userLogin) {
+        const postExists = await this.postsQueryRepository.getPostById(postId);
+        if (!postExists)
+            throw new common_1.NotFoundException();
         return await this.commentsRepository.createComment(postId, content, userId, userLogin);
     }
     async updateLikeStatus(commentId, userId, likeStatus) {
@@ -65,6 +73,7 @@ let CommentsService = class CommentsService {
 exports.CommentsService = CommentsService;
 exports.CommentsService = CommentsService = __decorate([
     (0, inversify_1.injectable)(),
-    __metadata("design:paramtypes", [comments_repository_1.CommentsRepository])
+    __metadata("design:paramtypes", [comments_repository_1.CommentsRepository,
+        posts_repository_1.PostsQueryRepository])
 ], CommentsService);
 //# sourceMappingURL=comments.service.js.map

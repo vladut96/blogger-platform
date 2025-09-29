@@ -54,7 +54,7 @@ __decorate([
     __metadata("design:type", Object)
 ], User.prototype, "passwordRecovery", void 0);
 exports.User = User = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'Users' })
+    (0, mongoose_1.Schema)({ collection: 'users' })
 ], User);
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
 //# sourceMappingURL=user.schema.js.map

@@ -41,8 +41,8 @@ let PostsController = class PostsController {
             currentUserId: user?.userId,
         });
     }
-    async createPostsComments(postId, content, user) {
-        return this.commentService.createComment(postId, content.content, user.userId, user.login);
+    async createPostsComments(postId, dto, user) {
+        return this.commentService.createComment(postId, dto.content, user.userId, user.login);
     }
     getPosts(query, user) {
         return this.postsQueryService.getPosts(query, user?.userId);
@@ -86,7 +86,7 @@ __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(':postId/comments'),
     __param(0, (0, common_1.Param)('postId')),
-    __param(1, (0, common_1.Body)('content')),
+    __param(1, (0, common_1.Body)()),
     __param(2, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, create_comments_dto_1.CreateCommentsDto, Object]),

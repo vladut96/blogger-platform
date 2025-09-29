@@ -128,7 +128,6 @@ export class PostsQueryRepository {
     private readonly postReactionModel: Model<PostReactionDocument>,
   ) {}
   async getPostById(id: string): Promise<PostPersistence | null> {
-    if (!Types.ObjectId.isValid(id)) return null;
     return this.postModel.findById(id).lean<PostPersistence | null>().exec();
   }
   async getPosts(

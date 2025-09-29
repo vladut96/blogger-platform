@@ -32,7 +32,9 @@ let OptionalJwtAuthGuard = class OptionalJwtAuthGuard {
         }
         try {
             const jwtService = this.jwtService;
-            const payload = await jwtService.verifyAsync(token);
+            const payload = await jwtService.verifyAsync(token, {
+                secret: process.env.JWT_SECRET || '123',
+            });
             request.user = {
                 userId: payload.userId,
                 login: payload.login,

@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Blog.prototype, "isMembership", void 0);
 exports.Blog = Blog = __decorate([
-    (0, mongoose_1.Schema)({ collection: 'Blogs' })
+    (0, mongoose_1.Schema)({ collection: 'blogs' })
 ], Blog);
 exports.BlogSchema = mongoose_1.SchemaFactory.createForClass(Blog);
 //# sourceMappingURL=blogs.schema.js.map
