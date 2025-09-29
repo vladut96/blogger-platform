@@ -10,6 +10,7 @@ export declare class PostsService {
     createPost(postPayload: CreateOrUpdatePostDto): Promise<PostViewModel>;
     updatePost(id: string, updateData: PostInputModel): Promise<void>;
     deletePostById(postId: string): Promise<void>;
+    deletePostByBlogAndPostId(blogId: string, postId: string): Promise<void>;
     setPostLikeStatus(postId: string, userId: string, userLogin: string, likeStatus: LikeStatus): Promise<void>;
 }
 export declare class PostsQueryService {

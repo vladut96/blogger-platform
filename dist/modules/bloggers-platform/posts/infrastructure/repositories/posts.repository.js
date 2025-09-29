@@ -58,6 +58,12 @@ let PostsRepository = class PostsRepository {
         const res = await this.postModel.deleteOne({ _id: id }).exec();
         return res.deletedCount > 0;
     }
+    async deletePostByBlogAndPostId(blogId, postId) {
+        const res = await this.postModel
+            .deleteOne({ _id: postId, blogId: blogId })
+            .exec();
+        return res.deletedCount > 0;
+    }
     async setPostLikeStatus(postId, userId, userLogin, likeStatus) {
         const session = await this.connection.startSession();
         try {

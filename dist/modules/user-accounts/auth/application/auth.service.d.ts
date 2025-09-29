@@ -10,6 +10,7 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
     }>;
+    deleteDeviceSession(userId: string, deviceId: string): Promise<void>;
     authenticateUser(loginOrEmail: string, password: string, deviceName: string, ip: string): Promise<{
         accessToken: string;
         refreshToken: string;

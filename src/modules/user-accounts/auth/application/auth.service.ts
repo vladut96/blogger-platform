@@ -28,17 +28,25 @@ export class AuthService {
     if (!user) throw new UnauthorizedException();
 
     const { accessToken, refreshToken } = generateTokens(user, deviceId);
-    const decoded = jwt.decode(refreshToken) as JwtPayload;
+    const decoded = jwt.decode(refreshToken);
 
-    if (decoded?.iat !== undefined && decoded?.exp !== undefined) {
-      await this.securityDevicesService.updateDeviceSession({
-        deviceId,
-        lastActiveDate: new Date(decoded.iat * 1000).toISOString(),
-        exp: new Date(decoded.exp * 1000).toISOString(),
-      });
+    if (!decoded || typeof decoded === 'string') {
+      throw new Error('Invalid refresh token');
     }
 
+    await this.securityDevicesService.updateDeviceSession({
+      deviceId,
+      lastActiveDate: new Date(decoded.iat! * 1000).toISOString(),
+      exp: new Date(decoded.exp! * 1000).toISOString(),
+    });
+
     return { accessToken, refreshToken };
+  }
+  async deleteDeviceSession(userId: string, deviceId: string) {
+    return await this.securityDevicesService.deleteDeviceSession(
+      userId,
+      deviceId,
+    );
   }
   async authenticateUser(
     loginOrEmail: string,

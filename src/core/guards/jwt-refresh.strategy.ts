@@ -2,7 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
-import { JwtRefreshTokenUser } from '../types/types';
+import { RefreshTokenModel } from '../types/types';
+import { SecurityDevicesService } from '../../modules/user-accounts/auth/application/security-devices.service';
 
 interface RequestWithCookies extends Request {
   cookies: Record<string, unknown>;
@@ -13,7 +14,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
   'jwt-refresh',
 ) {
-  constructor() {
+  constructor(private readonly securityDevicesService: SecurityDevicesService) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: RequestWithCookies) => {
@@ -30,11 +31,19 @@ export class JwtRefreshStrategy extends PassportStrategy(
     });
   }
 
-  async validate(req: RequestWithCookies, payload: JwtRefreshTokenUser) {
+  async validate(req: RequestWithCookies, payload: RefreshTokenModel) {
     if (!payload || !payload.userId || !payload.deviceId) {
       throw new UnauthorizedException();
     }
+    const isValid = await this.securityDevicesService.validateDeviceSession(
+      payload.deviceId,
+      payload.userId,
+      payload.exp,
+    );
 
+    if (!isValid) {
+      throw new UnauthorizedException();
+    }
     return {
       userId: payload.userId,
       deviceId: payload.deviceId,

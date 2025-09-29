@@ -40,17 +40,24 @@ let PostsService = class PostsService {
         return saved.toViewModel('None', []);
     }
     async updatePost(id, updateData) {
-        const entity = await this.postsRepository.getById(id);
-        if (!entity)
+        const postEntity = await this.postsRepository.getById(id);
+        if (!postEntity)
+            throw new common_1.NotFoundException();
+        if (postEntity.blogId !== updateData.blogId)
             throw new common_1.NotFoundException();
         const blog = await this.blogsQueryRepository.getBlogById(updateData.blogId);
         if (!blog)
             throw new common_1.NotFoundException();
-        entity.update(updateData, blog.name);
-        await this.postsRepository.save(entity);
+        postEntity.update(updateData, blog.name);
+        await this.postsRepository.save(postEntity);
     }
     async deletePostById(postId) {
         const deletedPost = await this.postsRepository.deletePostById(postId);
+        if (!deletedPost)
+            throw new common_1.NotFoundException();
+    }
+    async deletePostByBlogAndPostId(blogId, postId) {
+        const deletedPost = await this.postsRepository.deletePostByBlogAndPostId(blogId, postId);
         if (!deletedPost)
             throw new common_1.NotFoundException();
     }

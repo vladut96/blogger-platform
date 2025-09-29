@@ -22,8 +22,11 @@ import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
 import { JwtRefreshTokenUser, JwtUser } from '../../../../core/types/types';
 import { CodeDto } from '../dto/confirmation-code.dto';
 import { JwtRefreshGuard } from '../../../../core/guards/jwt-refresh.guard';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('auth')
+@UseGuards(ThrottlerGuard)
+//@Throttle({ default: { limit: 5, ttl: 10000 } })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('login')
@@ -64,11 +67,32 @@ export class AuthController {
   async setNewPassword(@Body() dto: NewPasswordDto) {
     return await this.authService.confirmPasswordRecovery(dto);
   }
-
+  @SkipThrottle()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh-token')
-  async getRefreshTokenPair(@CurrentUser() user: JwtRefreshTokenUser) {
-    return this.authService.getRefreshTokenPair(user.userId, user.deviceId);
+  @HttpCode(HttpStatus.OK)
+  async getRefreshTokenPair(
+    @CurrentUser() user: JwtRefreshTokenUser,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const tokens = await this.authService.getRefreshTokenPair(
+      user.userId,
+      user.deviceId,
+    );
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+
+    return { accessToken: tokens.accessToken };
+  }
+  @SkipThrottle()
+  @UseGuards(JwtRefreshGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(@CurrentUser() user: JwtRefreshTokenUser) {
+    await this.authService.deleteDeviceSession(user.userId, user.deviceId);
+    return;
   }
 
   @Post('registration-confirmation')
@@ -81,12 +105,14 @@ export class AuthController {
   async registerUser(@Body() dto: CreateUserDto) {
     await this.authService.registerUser(dto);
   }
+
   @Post('registration-email-resending')
   @HttpCode(HttpStatus.NO_CONTENT)
   async resendConfirmationEmail(@Body() dto: EmailDto) {
     return await this.authService.resendConfirmationEmail(dto.email);
   }
 
+  @SkipThrottle()
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getMyInfo(@CurrentUser() user: JwtUser) {

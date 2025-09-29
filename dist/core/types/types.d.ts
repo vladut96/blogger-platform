@@ -169,6 +169,10 @@ export interface JwtRefreshTokenUser {
     userId: string;
     deviceId: string;
 }
+export interface RefreshTokenModel extends JwtRefreshTokenUser {
+    iat: number;
+    exp: number;
+}
 export interface DeviceAuthSession {
     userId: string;
     deviceId: string;
@@ -177,14 +181,6 @@ export interface DeviceAuthSession {
     ip: string;
     exp?: string;
 }
-export type RefreshTokenModel = {
-    token: string;
-    userId: string;
-    issuedAt: Date;
-    expiresAt: Date;
-    isValid: boolean;
-    invalidatedAt?: Date;
-};
 export interface Paginator<T> {
     pagesCount: number;
     page: number;

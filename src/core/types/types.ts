@@ -173,6 +173,10 @@ export interface JwtRefreshTokenUser {
   userId: string;
   deviceId: string;
 }
+export interface RefreshTokenModel extends JwtRefreshTokenUser {
+  iat: number;
+  exp: number;
+}
 
 export interface DeviceAuthSession {
   userId: string;
@@ -182,14 +186,7 @@ export interface DeviceAuthSession {
   ip: string;
   exp?: string;
 }
-export type RefreshTokenModel = {
-  token: string; // Сам refresh-токен
-  userId: string; // ID пользователя
-  issuedAt: Date; // Когда был выдан
-  expiresAt: Date; // Срок действия
-  isValid: boolean; // Активен ли токен
-  invalidatedAt?: Date; // Когда был инвалидирован (если применимо)
-};
+
 export interface Paginator<T> {
   pagesCount: number;
   page: number;

@@ -36,14 +36,18 @@ let AuthService = class AuthService {
             throw new common_1.UnauthorizedException();
         const { accessToken, refreshToken } = (0, generateTokens_1.generateTokens)(user, deviceId);
         const decoded = jsonwebtoken_1.default.decode(refreshToken);
-        if (decoded?.iat !== undefined && decoded?.exp !== undefined) {
-            await this.securityDevicesService.updateDeviceSession({
-                deviceId,
-                lastActiveDate: new Date(decoded.iat * 1000).toISOString(),
-                exp: new Date(decoded.exp * 1000).toISOString(),
-            });
+        if (!decoded || typeof decoded === 'string') {
+            throw new Error('Invalid refresh token');
         }
+        await this.securityDevicesService.updateDeviceSession({
+            deviceId,
+            lastActiveDate: new Date(decoded.iat * 1000).toISOString(),
+            exp: new Date(decoded.exp * 1000).toISOString(),
+        });
         return { accessToken, refreshToken };
+    }
+    async deleteDeviceSession(userId, deviceId) {
+        return await this.securityDevicesService.deleteDeviceSession(userId, deviceId);
     }
     async authenticateUser(loginOrEmail, password, deviceName, ip) {
         const user = await this.usersService.getUserByLoginOrEmail(loginOrEmail);

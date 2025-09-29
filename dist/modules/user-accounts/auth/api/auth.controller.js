@@ -24,6 +24,7 @@ const jwt_auth_guard_1 = require("../../../../core/guards/jwt-auth.guard");
 const currentUser_JWT_1 = require("../../../../core/decorators/currentUser-JWT");
 const confirmation_code_dto_1 = require("../dto/confirmation-code.dto");
 const jwt_refresh_guard_1 = require("../../../../core/guards/jwt-refresh.guard");
+const throttler_1 = require("@nestjs/throttler");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -47,8 +48,17 @@ let AuthController = class AuthController {
     async setNewPassword(dto) {
         return await this.authService.confirmPasswordRecovery(dto);
     }
-    async getRefreshTokenPair(user) {
-        return this.authService.getRefreshTokenPair(user.userId, user.deviceId);
+    async getRefreshTokenPair(user, res) {
+        const tokens = await this.authService.getRefreshTokenPair(user.userId, user.deviceId);
+        res.cookie('refreshToken', tokens.refreshToken, {
+            httpOnly: true,
+            secure: true,
+        });
+        return { accessToken: tokens.accessToken };
+    }
+    async logout(user) {
+        await this.authService.deleteDeviceSession(user.userId, user.deviceId);
+        return;
     }
     async confirmEmail(dto) {
         return await this.authService.confirmEmail(dto.code);
@@ -95,13 +105,26 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "setNewPassword", null);
 __decorate([
+    (0, throttler_1.SkipThrottle)(),
     (0, common_1.UseGuards)(jwt_refresh_guard_1.JwtRefreshGuard),
     (0, common_1.Post)('refresh-token'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, currentUser_JWT_1.CurrentUser)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getRefreshTokenPair", null);
+__decorate([
+    (0, throttler_1.SkipThrottle)(),
+    (0, common_1.UseGuards)(jwt_refresh_guard_1.JwtRefreshGuard),
+    (0, common_1.Post)('logout'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
     __param(0, (0, currentUser_JWT_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "getRefreshTokenPair", null);
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.Post)('registration-confirmation'),
     (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
@@ -127,6 +150,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resendConfirmationEmail", null);
 __decorate([
+    (0, throttler_1.SkipThrottle)(),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)('me'),
     __param(0, (0, currentUser_JWT_1.CurrentUser)()),
@@ -136,6 +160,7 @@ __decorate([
 ], AuthController.prototype, "getMyInfo", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
+    (0, common_1.UseGuards)(throttler_1.ThrottlerGuard),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

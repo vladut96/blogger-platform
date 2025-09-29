@@ -20,5 +20,6 @@ import { SecurityDevicesController } from './api/security-devices.controller';
   ],
   controllers: [AuthController, SecurityDevicesController],
   providers: [AuthService, SecurityDevicesService, SecurityDevicesRepository],
+  exports: [SecurityDevicesService],
 })
 export class AuthModule {}

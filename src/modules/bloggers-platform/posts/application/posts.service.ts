@@ -41,17 +41,28 @@ export class PostsService {
     return saved.toViewModel('None', []);
   }
   async updatePost(id: string, updateData: PostInputModel): Promise<void> {
-    const entity = await this.postsRepository.getById(id);
-    if (!entity) throw new NotFoundException();
+    const postEntity = await this.postsRepository.getById(id);
+    if (!postEntity) throw new NotFoundException();
+    if (postEntity.blogId !== updateData.blogId) throw new NotFoundException();
 
     const blog = await this.blogsQueryRepository.getBlogById(updateData.blogId);
     if (!blog) throw new NotFoundException();
 
-    entity.update(updateData, blog.name);
-    await this.postsRepository.save(entity);
+    postEntity.update(updateData, blog.name);
+    await this.postsRepository.save(postEntity);
   }
   async deletePostById(postId: string): Promise<void> {
     const deletedPost = await this.postsRepository.deletePostById(postId);
+    if (!deletedPost) throw new NotFoundException();
+  }
+  async deletePostByBlogAndPostId(
+    blogId: string,
+    postId: string,
+  ): Promise<void> {
+    const deletedPost = await this.postsRepository.deletePostByBlogAndPostId(
+      blogId,
+      postId,
+    );
     if (!deletedPost) throw new NotFoundException();
   }
   async setPostLikeStatus(

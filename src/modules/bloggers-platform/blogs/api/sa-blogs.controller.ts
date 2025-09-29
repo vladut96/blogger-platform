@@ -11,37 +11,31 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BlogsQueryService, BlogsService } from '../application/blogs.service';
-import { QueryBlogsDto } from '../dto/query-blogs.dto';
 import { CreateBlogDto } from '../dto/create-blog.dto';
-import { PaginationDto } from '../../../../core/dto/pagination.dto';
 import {
   PostsQueryService,
   PostsService,
 } from '../../posts/application/posts.service';
 import { CreatePostDtoWithIdParam } from '../../posts/dto/create-or-update-post.dto';
 import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
+import { QueryBlogsDto } from '../dto/query-blogs.dto';
 import { OptionalJwtAuthGuard } from '../../../../core/guards/optinal-jwt-auth-guard';
+import { PaginationDto } from '../../../../core/dto/pagination.dto';
 import { CurrentUser } from '../../../../core/decorators/currentUser-JWT';
 import { JwtUser } from '../../../../core/types/types';
-import { ParseMongoIdPipe } from '../../../../core/pipes/parse-mongo-id.pipe';
 
-@Controller('blogs')
+@Controller('sa/blogs')
+@UseGuards(BasicAuthGuard)
 export class BlogsController {
   constructor(
     private readonly blogsService: BlogsService,
+    private readonly postsService: PostsService,
     private readonly blogsQueryService: BlogsQueryService,
     private readonly postsQueryService: PostsQueryService,
-    private readonly postsService: PostsService,
   ) {}
-
   @Get()
   async getBlogs(@Query() query: QueryBlogsDto) {
     return await this.blogsQueryService.getBlogs(query);
-  }
-  @UseGuards(BasicAuthGuard)
-  @Post()
-  async createBlog(@Body() dto: CreateBlogDto) {
-    return await this.blogsService.createBlog(dto);
   }
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':blogId/posts')
@@ -52,7 +46,10 @@ export class BlogsController {
   ) {
     return this.postsQueryService.getPostsByBlogId(blogId, query, user?.userId);
   }
-  @UseGuards(BasicAuthGuard)
+  @Post()
+  async createBlog(@Body() dto: CreateBlogDto) {
+    return await this.blogsService.createBlog(dto);
+  }
   @Post(':blogId/posts')
   async createPost(
     @Param('blogId') blogId: string,
@@ -60,21 +57,34 @@ export class BlogsController {
   ) {
     return await this.postsService.createPost({ ...dto, blogId });
   }
-
-  @Get(':id')
-  async getBlogById(@Param('id') id: string) {
-    return await this.blogsQueryService.getBlogById(id);
-  }
-  @UseGuards(BasicAuthGuard)
   @Put(':id')
   @HttpCode(204)
   async updateBlog(@Param('id') id: string, @Body() dto: CreateBlogDto) {
     return this.blogsService.updateBlog(id, dto);
   }
-  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string) {
     return this.blogsService.deleteBlogById(id);
+  }
+  @Put(':blogId/posts/:postId')
+  @HttpCode(204)
+  async updatePostAsAdmin(
+    @Param('blogId') blogId: string,
+    @Param('postId') postId: string,
+    @Body() dto: CreatePostDtoWithIdParam,
+  ) {
+    return await this.postsService.updatePost(postId, {
+      ...dto,
+      blogId,
+    });
+  }
+  @Delete(':blogId/posts/:postId')
+  @HttpCode(204)
+  async deletePostAsAdmin(
+    @Param('blogId') blogId: string,
+    @Param('postId') postId: string,
+  ) {
+    return await this.postsService.deletePostByBlogAndPostId(blogId, postId);
   }
 }

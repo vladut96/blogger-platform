@@ -57,6 +57,15 @@ export class PostsRepository {
     const res = await this.postModel.deleteOne({ _id: id }).exec();
     return res.deletedCount > 0;
   }
+  async deletePostByBlogAndPostId(
+    blogId: string,
+    postId: string,
+  ): Promise<boolean> {
+    const res = await this.postModel
+      .deleteOne({ _id: postId, blogId: blogId })
+      .exec();
+    return res.deletedCount > 0;
+  }
   async setPostLikeStatus(
     postId: string,
     userId: string,

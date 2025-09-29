@@ -61,7 +61,6 @@ let UsersService = class UsersService {
     }
     async registerUser(userDTO) {
         const userEntity = await user_entity_1.UserEntity.register(userDTO);
-        console.log('in user service with email', userEntity.email);
         return await this.usersRepository.save(userEntity.toPersistence());
     }
     async deleteUserById(userId) {

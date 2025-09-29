@@ -25,8 +25,24 @@ export class SecurityDevicesService {
   }): Promise<boolean> {
     return this.securityDevicesRepository.updateDeviceSession(sessionData);
   }
+  async validateDeviceSession(
+    deviceId: string,
+    userId: string,
+    exp: number,
+  ): Promise<boolean> {
+    const session =
+      await this.securityDevicesRepository.findSessionByDeviceId(deviceId);
 
-  async deleteDevice(userId: string, deviceId: string) {
+    if (!session || session.userId !== userId || !session.exp) return false;
+
+    const sessionExp = Number(new Date(session.exp).getTime() / 1000);
+
+    if (sessionExp !== exp) return false;
+
+    return true;
+  }
+
+  async deleteDeviceSession(userId: string, deviceId: string) {
     const session =
       await this.securityDevicesRepository.findSessionByDeviceId(deviceId);
     if (!session) throw new NotFoundException();

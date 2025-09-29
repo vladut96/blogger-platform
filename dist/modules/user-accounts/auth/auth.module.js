@@ -29,6 +29,7 @@ exports.AuthModule = AuthModule = __decorate([
         ],
         controllers: [auth_controller_1.AuthController, security_devices_controller_1.SecurityDevicesController],
         providers: [auth_service_1.AuthService, security_devices_service_1.SecurityDevicesService, security_devices_repository_1.SecurityDevicesRepository],
+        exports: [security_devices_service_1.SecurityDevicesService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

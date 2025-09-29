@@ -9,8 +9,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BloggersPlatformModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
-const blogs_controller_1 = require("./blogs/api/blogs.controller");
-const posts_controller_1 = require("./posts/api/posts.controller");
 const blogs_service_1 = require("./blogs/application/blogs.service");
 const blogs_repository_1 = require("./blogs/infrastructure/repositories/blogs.repository");
 const posts_service_1 = require("./posts/application/posts.service");
@@ -23,6 +21,10 @@ const comments_schema_1 = require("./comments/infrastructure/schemas/comments.sc
 const comments_controller_1 = require("./comments/api/comments.controller");
 const comments_service_1 = require("./comments/application/comments.service");
 const comments_repository_1 = require("./comments/infrastructure/repositories/comments.repository");
+const sa_posts_controller_1 = require("./posts/api/sa-posts.controller");
+const public_posts_controller_1 = require("./posts/api/public-posts.controller");
+const public_blogs_controller_1 = require("./blogs/api/public-blogs.controller");
+const sa_blogs_controller_1 = require("./blogs/api/sa-blogs.controller");
 let BloggersPlatformModule = class BloggersPlatformModule {
 };
 exports.BloggersPlatformModule = BloggersPlatformModule;
@@ -37,7 +39,13 @@ exports.BloggersPlatformModule = BloggersPlatformModule = __decorate([
                 { name: comments_schema_1.Comment.name, schema: comments_schema_1.CommentSchema },
             ]),
         ],
-        controllers: [blogs_controller_1.BlogsController, posts_controller_1.PostsController, comments_controller_1.CommentsController],
+        controllers: [
+            sa_blogs_controller_1.BlogsController,
+            public_blogs_controller_1.BlogsPublicController,
+            sa_posts_controller_1.PostsController,
+            public_posts_controller_1.PostsPublicController,
+            comments_controller_1.CommentsController,
+        ],
         providers: [
             blogs_service_1.BlogsService,
             blogs_service_1.BlogsQueryService,

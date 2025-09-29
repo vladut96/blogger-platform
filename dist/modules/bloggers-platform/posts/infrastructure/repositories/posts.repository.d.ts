@@ -12,6 +12,7 @@ export declare class PostsRepository {
     getById(id: string): Promise<PostEntity | null>;
     save(entity: PostEntity): Promise<PostEntity>;
     deletePostById(id: string): Promise<boolean>;
+    deletePostByBlogAndPostId(blogId: string, postId: string): Promise<boolean>;
     setPostLikeStatus(postId: string, userId: string, userLogin: string, likeStatus: LikeStatus): Promise<'OK' | 'NOT_FOUND'>;
 }
 export declare class PostsQueryRepository {

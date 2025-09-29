@@ -5,8 +5,7 @@ import { BloggersPlatformModule } from './modules/bloggers-platform/bloggers-pla
 import { ConfigModule } from '@nestjs/config';
 import { TestingModule } from './modules/delete-all-testing/testing.module';
 import { AuthModule } from './modules/user-accounts/auth/auth.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { GuardsModule } from './core/guards/guards.module';
 
 @Module({
@@ -28,12 +27,6 @@ import { GuardsModule } from './core/guards/guards.module';
     BloggersPlatformModule,
     AuthModule,
     TestingModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
   ],
 })
 export class AppModule {}

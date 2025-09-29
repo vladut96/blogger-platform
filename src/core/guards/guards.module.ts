@@ -8,10 +8,12 @@ import { BasicAuthGuard } from './basic-auth.guard';
 import { OptionalJwtAuthGuard } from './optinal-jwt-auth-guard';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
 import { JwtRefreshStrategy } from './jwt-refresh.strategy';
+import { AuthModule } from '../../modules/user-accounts/auth/auth.module';
 
 @Global()
 @Module({
   imports: [
+    AuthModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secret123',

@@ -20,7 +20,7 @@ export class SecurityDevicesController {
   ) {}
   @Get()
   async getDevices(@CurrentUser() user: JwtRefreshTokenUser) {
-    return this.securityDevicesService.getDevices(user.userId);
+    return await this.securityDevicesService.getDevices(user.userId);
   }
   @Delete(':deviceId')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -28,7 +28,10 @@ export class SecurityDevicesController {
     @Param('deviceId') deviceId: string,
     @CurrentUser() user: JwtRefreshTokenUser,
   ) {
-    return this.securityDevicesService.deleteDevice(deviceId, user.userId);
+    await this.securityDevicesService.deleteDeviceSession(
+      user.userId,
+      deviceId,
+    );
   }
   @Delete()
   @HttpCode(HttpStatus.NO_CONTENT)

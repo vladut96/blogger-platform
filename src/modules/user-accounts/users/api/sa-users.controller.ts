@@ -19,7 +19,7 @@ import { BasicAuthGuard } from '../../../../core/guards/basic-auth.guard';
 import { MongoID } from '../../../../core/types/types';
 
 @UseGuards(BasicAuthGuard)
-@Controller('users')
+@Controller('sa/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get()

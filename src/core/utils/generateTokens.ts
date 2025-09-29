@@ -5,8 +5,8 @@ export const generateTokens = (
   user: { _id: ObjectId; email: string; login: string },
   deviceId: string,
 ) => {
-  const accessTokenExpiresIn = '10s';
-  const refreshTokenExpiresIn = '30s';
+  const accessTokenExpiresIn = '1000000s';
+  const refreshTokenExpiresIn = '20s';
 
   const accessToken = jwt.sign(
     {
@@ -23,7 +23,7 @@ export const generateTokens = (
       userId: user._id.toString(),
       deviceId,
     },
-    process.env.JWT_SECRET!,
+    process.env.JWT_REFRESH_SECRET!,
     { expiresIn: refreshTokenExpiresIn },
   );
 

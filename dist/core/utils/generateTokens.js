@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateTokens = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateTokens = (user, deviceId) => {
-    const accessTokenExpiresIn = '10s';
-    const refreshTokenExpiresIn = '30s';
+    const accessTokenExpiresIn = '1000000s';
+    const refreshTokenExpiresIn = '20s';
     const accessToken = jsonwebtoken_1.default.sign({
         email: user.email,
         login: user.login,
@@ -16,7 +16,7 @@ const generateTokens = (user, deviceId) => {
     const refreshToken = jsonwebtoken_1.default.sign({
         userId: user._id.toString(),
         deviceId,
-    }, process.env.JWT_SECRET, { expiresIn: refreshTokenExpiresIn });
+    }, process.env.JWT_REFRESH_SECRET, { expiresIn: refreshTokenExpiresIn });
     return {
         accessToken,
         refreshToken,

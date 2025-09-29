@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication } from '@nestjs/common';
 import { RequestListener } from 'http';
+import cookieParser from 'cookie-parser';
 import { Request, Response } from 'express';
 
 let cachedApp: INestApplication | null = null;
@@ -11,6 +12,7 @@ async function bootstrap() {
   if (!cachedApp) {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
+    app.use(cookieParser());
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -36,6 +38,7 @@ if (!process.env.VERCEL) {
   (async () => {
     const app = await NestFactory.create(AppModule);
     app.enableCors();
+    app.use(cookieParser());
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,
@@ -56,7 +59,6 @@ if (!process.env.VERCEL) {
     );
   })();
 }
-
 export default async function handler(req: Request, res: Response) {
   const app = await bootstrap();
   return app(req, res);

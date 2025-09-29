@@ -17,6 +17,7 @@ const basic_auth_guard_1 = require("./basic-auth.guard");
 const optinal_jwt_auth_guard_1 = require("./optinal-jwt-auth-guard");
 const jwt_refresh_guard_1 = require("./jwt-refresh.guard");
 const jwt_refresh_strategy_1 = require("./jwt-refresh.strategy");
+const auth_module_1 = require("../../modules/user-accounts/auth/auth.module");
 let GuardsModule = class GuardsModule {
 };
 exports.GuardsModule = GuardsModule;
@@ -24,6 +25,7 @@ exports.GuardsModule = GuardsModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [
+            auth_module_1.AuthModule,
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET || 'secret123',

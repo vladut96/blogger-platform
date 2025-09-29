@@ -14,10 +14,10 @@ export declare class AuthController {
     }>;
     requestPasswordRecovery(dto: EmailDto): Promise<void>;
     setNewPassword(dto: NewPasswordDto): Promise<boolean>;
-    getRefreshTokenPair(user: JwtRefreshTokenUser): Promise<{
+    getRefreshTokenPair(user: JwtRefreshTokenUser, res: Response): Promise<{
         accessToken: string;
-        refreshToken: string;
     }>;
+    logout(user: JwtRefreshTokenUser): Promise<void>;
     confirmEmail(dto: CodeDto): Promise<void>;
     registerUser(dto: CreateUserDto): Promise<void>;
     resendConfirmationEmail(dto: EmailDto): Promise<void>;
