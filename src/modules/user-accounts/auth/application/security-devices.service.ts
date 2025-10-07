@@ -41,7 +41,6 @@ export class SecurityDevicesService {
 
     return true;
   }
-
   async deleteDeviceSession(userId: string, deviceId: string) {
     const session =
       await this.securityDevicesRepository.findSessionByDeviceId(deviceId);
