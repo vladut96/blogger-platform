@@ -25,16 +25,6 @@ let SecurityDevicesService = class SecurityDevicesService {
     async updateDeviceSession(sessionData) {
         return this.securityDevicesRepository.updateDeviceSession(sessionData);
     }
-    async validateDeviceSession(deviceId, userId, exp) {
-        const session = await this.securityDevicesRepository.findSessionByDeviceId(deviceId);
-        if (!session || session.userId !== userId || !session.exp)
-            return false;
-        const sessionExp = Number(new Date(session.exp).getTime() / 1000);
-        if (sessionExp !== exp)
-            return false;
-        return true;
-    }
-    async deleteDeviceSession(userId, deviceId) {
         const session = await this.securityDevicesRepository.findSessionByDeviceId(deviceId);
         if (!session)
             throw new common_1.NotFoundException();

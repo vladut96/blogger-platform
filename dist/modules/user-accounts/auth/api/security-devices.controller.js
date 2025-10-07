@@ -22,10 +22,8 @@ let SecurityDevicesController = class SecurityDevicesController {
         this.securityDevicesService = securityDevicesService;
     }
     async getDevices(user) {
-        return await this.securityDevicesService.getDevices(user.userId);
     }
     async deleteDevice(deviceId, user) {
-        await this.securityDevicesService.deleteDeviceSession(user.userId, deviceId);
     }
     async deleteAllExceptCurrent(user) {
         await this.securityDevicesService.deleteAllExceptCurrent(user.userId, user.deviceId);

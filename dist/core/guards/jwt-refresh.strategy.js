@@ -13,9 +13,7 @@ exports.JwtRefreshStrategy = void 0;
 const common_1 = require("@nestjs/common");
 const passport_jwt_1 = require("passport-jwt");
 const passport_1 = require("@nestjs/passport");
-const security_devices_service_1 = require("../../modules/user-accounts/auth/application/security-devices.service");
 let JwtRefreshStrategy = class JwtRefreshStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt-refresh') {
-    constructor(securityDevicesService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
                 (req) => {
@@ -30,14 +28,9 @@ let JwtRefreshStrategy = class JwtRefreshStrategy extends (0, passport_1.Passpor
             secretOrKey: process.env.JWT_REFRESH_SECRET || 'refreshSecret123',
             passReqToCallback: true,
         });
-        this.securityDevicesService = securityDevicesService;
     }
     async validate(req, payload) {
         if (!payload || !payload.userId || !payload.deviceId) {
-            throw new common_1.UnauthorizedException();
-        }
-        const isValid = await this.securityDevicesService.validateDeviceSession(payload.deviceId, payload.userId, payload.exp);
-        if (!isValid) {
             throw new common_1.UnauthorizedException();
         }
         return {
@@ -49,6 +42,5 @@ let JwtRefreshStrategy = class JwtRefreshStrategy extends (0, passport_1.Passpor
 exports.JwtRefreshStrategy = JwtRefreshStrategy;
 exports.JwtRefreshStrategy = JwtRefreshStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [security_devices_service_1.SecurityDevicesService])
 ], JwtRefreshStrategy);
 //# sourceMappingURL=jwt-refresh.strategy.js.map

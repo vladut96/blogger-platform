@@ -20,7 +20,5 @@ export declare class SecurityDevicesService {
         lastActiveDate: string;
         exp: string;
     }): Promise<boolean>;
-    validateDeviceSession(deviceId: string, userId: string, exp: number): Promise<boolean>;
-    deleteDeviceSession(userId: string, deviceId: string): Promise<void>;
     deleteAllExceptCurrent(userId: string, currentDeviceId: string): Promise<void>;
 }
